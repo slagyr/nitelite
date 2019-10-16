@@ -34,6 +34,10 @@ void ArduinoHardware::setPinLow(byte pin) {
     digitalWrite(pin, LOW);
 }
 
+void ArduinoHardware::analogWritePin(byte pin, int value) {
+    analogWrite(pin, value);
+}
+
 void ArduinoHardware::playNote(byte pin, unsigned int frequency, unsigned long duration) {
     tone(pin, frequency, duration);
 }

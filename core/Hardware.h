@@ -14,6 +14,7 @@ public:
     virtual unsigned long getMillis() = 0;
     virtual void setPinHigh(byte pin) = 0;
     virtual void setPinLow(byte pin) = 0;
+    virtual void analogWritePin(byte pin, int value) = 0;
     virtual void playNote(byte pin, unsigned int frequency, unsigned long duration) = 0;
 
     virtual void sleep(unsigned long duration) = 0;

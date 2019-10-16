@@ -32,8 +32,13 @@ protected:
 
 TEST_F(ControllerTest, Screens) {
     EXPECT_STREQ("Splash", controller->splashScreen->getName());
-    EXPECT_STREQ("Home", controller->homeScreen->getName());
+    EXPECT_STREQ("RGB", controller->rgbScreen->getName());
     EXPECT_EQ(controller->splashScreen, controller->getScreen());
+}
+
+TEST_F(ControllerTest, Modes) {
+    EXPECT_EQ("Your Color", controller->modes->get(0)->getName());
+    EXPECT_EQ("Your Color", controller->getMode()->getName());
 }
 
 TEST_F(ControllerTest, Setup) {
@@ -55,7 +60,7 @@ TEST_F(ControllerTest, ScreenTimeout) {
 
     controller->tick(1111);
 
-    EXPECT_STREQ("Home", controller->getScreen()->getName());
+    EXPECT_STREQ("RGB", controller->getScreen()->getName());
 }
 
 TEST_F(ControllerTest, EnteringScreen) {
@@ -79,3 +84,32 @@ TEST_F(ControllerTest, DisplayOff) {
 
     EXPECT_EQ("LOW", hardware->digitalWrites[OLED_PIN]);
 }
+
+TEST_F(ControllerTest, ReadRGB) {
+    hardware->analogReads[R_IN_PIN].push(001);
+    hardware->analogReads[G_IN_PIN].push(512);
+    hardware->analogReads[B_IN_PIN].push(1023);
+
+    controller->readRGB();
+
+    EXPECT_EQ(0, controller->redInput);
+    EXPECT_EQ(127, controller->greenInput);
+    EXPECT_EQ(255, controller->blueInput);
+}
+
+TEST_F(ControllerTest, WriteRGB) {
+    controller->writeRGB(100, 200, 123);
+
+    EXPECT_EQ(100, controller->red);
+    ASSERT_EQ(false, hardware->analogWrites[R_OUT_PIN].empty());
+    EXPECT_EQ(100, hardware->analogWrites[R_OUT_PIN].front());
+
+    EXPECT_EQ(200, controller->green);
+    ASSERT_EQ(false, hardware->analogWrites[G_OUT_PIN].empty());
+    EXPECT_EQ(200, hardware->analogWrites[G_OUT_PIN].front());
+
+    EXPECT_EQ(123, controller->blue);
+    ASSERT_EQ(false, hardware->analogWrites[B_OUT_PIN].empty());
+    EXPECT_EQ(123, hardware->analogWrites[B_OUT_PIN].front());
+}
+

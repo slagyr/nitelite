@@ -32,6 +32,8 @@ public:
     void sleep(unsigned long duration) override;
 
     void pinToInputPullup(byte pin) override;
+
+    void analogWritePin(byte pin, int value) override;
 };
 
 

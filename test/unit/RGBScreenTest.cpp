@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include "screen/HomeScreen.h"
+#include "screen/RGBScreen.h"
 #include "MockController.h"
 
-class HomeScreenTest : public ::testing::Test {
+class RGBScreenTest : public ::testing::Test {
 protected:
 
     MockController *controller;
@@ -11,7 +11,7 @@ protected:
 
     virtual void SetUp() {
         controller = MockController::create();
-        screen = new HomeScreen(controller);
+        screen = new RGBScreen(controller);
         display = controller->mockDisplay;
     }
 
@@ -21,12 +21,12 @@ protected:
     }
 };
 
-TEST_F(HomeScreenTest, Hardcoding) {
-    EXPECT_EQ("Home", screen->getName());
+TEST_F(RGBScreenTest, Hardcoding) {
+    EXPECT_EQ("RGB", screen->getName());
     EXPECT_EQ(3600000, screen->getIdleTimeout());
 }
 
-//TEST_F(HomeScreenTest, Enter) {
+//TEST_F(RGBScreenTest, Enter) {
 //    controller->hackVoltage(0, 3.0);
 //    controller->hackVoltage(1, 3.1);
 //    controller->hackVoltage(2, 3.2);
@@ -53,7 +53,7 @@ TEST_F(HomeScreenTest, Hardcoding) {
 //    EXPECT_EQ(true, display->howmShown);
 //}
 
-//TEST_F(HomeScreenTest, Update) {
+//TEST_F(RGBScreenTest, Update) {
 //    controller->hackCurrentCell(6);
 //    controller->hackCurrentCellVoltageChanged(true);
 //    controller->hackVoltage(6, 3.0);
@@ -63,7 +63,7 @@ TEST_F(HomeScreenTest, Hardcoding) {
 //    EXPECT_NEAR(3.0, display->voltages[6], 0.01);
 //}
 //
-//TEST_F(HomeScreenTest, BalancingIndication) {
+//TEST_F(RGBScreenTest, BalancingIndication) {
 //    controller->hackBalancing(3, 6, true);
 //
 //    screen->update();

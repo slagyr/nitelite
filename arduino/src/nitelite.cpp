@@ -84,9 +84,9 @@ void loop() {
 //
 //void fade(int from, int to) {
 //    for(int i = 0; i < 255; i++) {
-//        analogWrite(from, i);
+//        analogWritePin(from, i);
 //        delay(5);
-//        analogWrite(to, 255 - i);
+//        analogWritePin(to, 255 - i);
 //        delay(5);
 //    }
 //}
@@ -112,9 +112,9 @@ void loop() {
 //    int g = green / 870.0 * 255;
 //    int b = blue / 870.0 * 255;
 //
-//    analogWrite(R_OUT_PIN, r);
-//    analogWrite(G_OUT_PIN, g);
-//    analogWrite(B_OUT_PIN, b);
+//    analogWritePin(R_OUT_PIN, r);
+//    analogWritePin(G_OUT_PIN, g);
+//    analogWritePin(B_OUT_PIN, b);
 //}
 //
 //void print_color_input(int red, int green, int blue) {

@@ -28,7 +28,8 @@ public:
 
     string pinModes[40];
     queue<int> digitalReads[40];
-    queue<int> analogReads[20];
+    queue<int> analogReads[40];
+    queue<int> analogWrites[40];
     queue<unsigned int> millisReads;
     string digitalWrites[40];
     vector<PlayedNote *> notesPlayed;
@@ -79,6 +80,10 @@ public:
     void setPinHigh(byte pin) override { digitalWrites[pin] = "HIGH"; }
 
     void setPinLow(byte pin) override { digitalWrites[pin] = "LOW"; }
+
+    void analogWritePin(byte pin, int value) override {
+        analogWrites[pin].push(value);
+    }
 
     void playNote(byte pin, unsigned int frequency, unsigned long duration) override {
         notesPlayed.push_back(new PlayedNote(pin, frequency, duration));

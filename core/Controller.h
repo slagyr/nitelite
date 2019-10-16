@@ -6,8 +6,8 @@
 #include "Screen.h"
 #include "Switch.h"
 #include "Context.h"
-
-#define CELL_COUNT 10
+#include "Mode.h"
+#include "LinkedList.h"
 
 class Controller {
 
@@ -20,25 +20,43 @@ public:
 
     void setScreen(Screen *screen);
 
-    Screen* getScreen();
+    void setMode(Mode *m);
 
-    // Screens
-    Screen *splashScreen;
-    Screen *homeScreen;
+    Screen *getScreen();
 
-    Hardware *hardware;
-    Display *display;
-    Switch *fetSwitch;
-    Switch *capSwitch;
-    Switch *balanceSwitch;
+    Mode *getMode();
 
     void displayOn();
 
     void displayOff();
 
+    void readRGB();
+
+    void writeRGB(int r, int g, int b);
+
+    void writeRGBInputs();
+
+
+    Screen *splashScreen;
+    Screen *rgbScreen;
+
+    LinkedList<Mode *> *modes;
+
+    Hardware *hardware;
+    Display *display;
+
+    int redInput;
+    int greenInput;
+    int blueInput;
+    int red;
+    int green;
+    int blue;
+
+
 protected:
 
-    Screen* screen;
+    Screen *screen;
+    Mode *mode;
 
 private:
 
