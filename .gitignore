@@ -1,0 +1,7 @@
+.pio
+CMakeListsPrivate.txt
+.idea
+cmake-build-nanoatmega328
+.piolibdeps
+.pioenvs
+.DS_Store
