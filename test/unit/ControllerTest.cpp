@@ -41,7 +41,7 @@ TEST_F(ControllerTest, Screens) {
 }
 
 TEST_F(ControllerTest, Modes) {
-    EXPECT_EQ("Your Color", controller->modes->get(0)->getName());
+    EXPECT_EQ("Your Color", controller->modes[0]->getName());
     EXPECT_EQ("Your Color", controller->getMode()->getName());
 }
 

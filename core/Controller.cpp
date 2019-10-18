@@ -9,8 +9,8 @@ Controller::Controller() {
     lastUserEventTime = 0;
     splashScreen = new SplashScreen(this);
     rgbScreen = new RGBScreen(this);
-    modes = new LinkedList<Mode*>();
-    modes->add(new YourColorMode(this));
+    modes = new Mode*[10];
+    modes[0] = new YourColorMode(this);
     tempScreenTimeout = 0;
 }
 
@@ -22,7 +22,7 @@ void Controller::setup() {
     hardware->pinToOutput(G_OUT_PIN);
     hardware->pinToOutput(B_OUT_PIN);
     hardware->pinToOutput(OLED_PIN);
-    setMode(modes->get(0));
+    setMode(modes[0]);
     setScreen(rgbScreen);
 }
 

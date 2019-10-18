@@ -43,18 +43,18 @@ public:
     Screen *splashScreen;
     Screen *rgbScreen;
 
-    LinkedList<Mode *> *modes;
+    Mode **modes;
 
     Hardware *hardware;
     Oled *display;
 
-    int redInput;
-    int greenInput;
-    int blueInput;
-    int red;
-    int green;
-    int blue;
-    int tempScreenTimeout;
+    byte redInput;
+    byte greenInput;
+    byte blueInput;
+    byte red;
+    byte green;
+    byte blue;
+    short tempScreenTimeout;
 
 
 protected:

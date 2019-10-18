@@ -85,35 +85,3 @@ void loop() {
 //
 //    //    delay(10);
 //}
-//
-//void update_user_color() {
-//    int red = analogRead(R_IN_PIN);
-//    int green = analogRead(G_IN_PIN);
-//    int blue = analogRead(B_IN_PIN);
-//
-//    int r = red / 870.0 * 255;
-//    int g = green / 870.0 * 255;
-//    int b = blue / 870.0 * 255;
-//
-//    analogWritePin(R_OUT_PIN, r);
-//    analogWritePin(G_OUT_PIN, g);
-//    analogWritePin(B_OUT_PIN, b);
-//}
-//
-//void print_color_input(int red, int green, int blue) {
-//    Serial.print("RGB in: ");
-//    Serial.print(red);
-//    Serial.print(", ");
-//    Serial.print(green);
-//    Serial.print(", ");
-//    Serial.println(blue);
-//}
-//
-//void print_color_output(int r, int g, int b) {
-//    Serial.print("RGB out: ");
-//    Serial.print(r);
-//    Serial.print(", ");
-//    Serial.print(g);
-//    Serial.print(", ");
-//    Serial.println(b);
-//}
