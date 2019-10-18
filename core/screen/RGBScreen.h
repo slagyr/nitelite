@@ -3,6 +3,7 @@
 
 
 #include <Screen.h>
+#include <oled/Oled.h>
 
 class RGBScreen : public Screen {
 
@@ -15,7 +16,7 @@ public:
 
     void update() override;
 
-    unsigned long getIdleTimeout() override;
+    void writeColorValue(int row, const char *colorVal) const;
 };
 
 

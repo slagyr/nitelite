@@ -57,7 +57,7 @@ void Controller::setMode(Mode *m) {
 }
 
 void Controller::tick(unsigned long millis) {
-    screen->update();
+    getActiveScreen()->update();
     mode->tick();
 
     if (tempScreen != nullptr && millis > lastUserEventTime + tempScreenTimeout) {

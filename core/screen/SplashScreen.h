@@ -15,7 +15,6 @@ public:
 
     void update() override;
 
-    unsigned long getIdleTimeout() override;
 };
 
 

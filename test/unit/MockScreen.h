@@ -5,26 +5,26 @@
 
 class MockScreen : public Screen {
 public:
-    MockScreen(Controller *controller) : Screen(controller) {}
+    MockScreen(Controller *controller) : MockScreen(controller, "Mock Screen") {}
+    MockScreen(Controller *controller, const char* name) : Screen(controller) {
+        this->name = name;
+    }
 
     const char *getName() override {
-        return "Mock Screen";
+        return name;
     }
 
     void enter() override {
-        entered = true;
+        wasEntered = true;
     }
 
     void update() override {
-        updated = true;
+        wasUpdated = true;
     }
 
-    unsigned long getIdleTimeout() override {
-        return timeout;
-    }
-
-    bool entered = false;
-    bool updated = false;
+    bool wasEntered = false;
+    bool wasUpdated = false;
+    const char *name;
     unsigned long timeout = 6000;
 };
 

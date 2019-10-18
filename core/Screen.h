@@ -5,9 +5,7 @@ class Controller;
 
 class Screen {
 public:
-    virtual ~Screen() = default;
-
-    virtual unsigned long getIdleTimeout() { return 5000; };
+    virtual ~Screen() = default;;
 
     virtual const char *getName() = 0;
 

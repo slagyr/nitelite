@@ -1,8 +1,6 @@
 #include "Oled.h"
 #include "string.h"
 #include "OledFonts.h"
-#include <iostream>
-using namespace std;
 
 Oled::Oled(OledComm *comm) : Canvas(128, 64) {
     this->comm = comm;
@@ -50,6 +48,7 @@ void Oled::drawBitmap(byte x, byte page, byte widthPx, byte heightPx, const byte
         for (int xp = x; xp < x + widthPx; xp++) {
             int bufI = yp * width() + xp;
             buffer[bufI] = comm->pmgByte(bmp, bmpI);
+            bmpI += 1;
         }
     }
 }

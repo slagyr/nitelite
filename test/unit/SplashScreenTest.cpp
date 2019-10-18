@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "screen/SplashScreen.h"
 #include "MockController.h"
+#include "testutil.h"
 
 class SplashScreenTest : public ::testing::Test {
 protected:
@@ -21,12 +22,11 @@ protected:
 
 TEST_F(SplashScreenTest, Hardcoding) {
     EXPECT_EQ("Splash", screen->getName());
-    EXPECT_EQ(3000, screen->getIdleTimeout());
 }
 
-//TEST_F(SplashScreenTest, Enter) {
+//TEST_F(SplashScreenTest, Preview) {
 //    screen->enter();
 //
-//    EXPECT_EQ(true, controller->mockDisplay->splashed);
+//    print_buffer(controller->display->getBuffer());
 //}
 

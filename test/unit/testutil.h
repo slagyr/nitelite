@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-void print_buffer(byte *buffer) {
+static void print_buffer(byte *buffer) {
     for(int page = 0; page < 8; page++) {
         int y = 128 * page;
         for (int row = 0; row < 8; row++) {

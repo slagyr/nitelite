@@ -1,5 +1,3 @@
-#define PROGMEM
-
 #include <gtest/gtest.h>
 #include <oled/OledFonts.h>
 #include "oled/Oled.h"

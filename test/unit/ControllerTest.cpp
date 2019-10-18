@@ -62,19 +62,40 @@ TEST_F(ControllerTest, TempScreenTimeout) {
     controller->setTempScreen(screen, 123);
 
     EXPECT_STREQ("Mock Screen", controller->getActiveScreen()->getName());
-    EXPECT_EQ(true, screen->entered);
+    EXPECT_EQ(true, screen->wasEntered);
 
     controller->tick(1111);
 
     EXPECT_STREQ("RGB", controller->getActiveScreen()->getName());
 }
 
+TEST_F(ControllerTest, ScreenUpdate) {
+    MockScreen *tempScreen = new MockScreen(controller, "Temp");
+    MockScreen *normScreen = new MockScreen(controller, "Notm");
+
+    controller->setScreen(normScreen);
+    controller->tick(111);
+    EXPECT_EQ(true, normScreen->wasUpdated);
+    EXPECT_EQ(false, tempScreen->wasUpdated);
+    normScreen->wasUpdated = false;
+
+    controller->setTempScreen(tempScreen, 123);
+    controller->tick(222);
+    EXPECT_EQ(false, normScreen->wasUpdated);
+    EXPECT_EQ(true, tempScreen->wasUpdated);
+    tempScreen->wasUpdated = false;
+
+    controller->tick(9999);
+    EXPECT_EQ(true, normScreen->wasUpdated);
+    EXPECT_EQ(false, tempScreen->wasUpdated);
+}
+
 TEST_F(ControllerTest, EnteringScreen) {
-    EXPECT_EQ(false, screen->entered);
+    EXPECT_EQ(false, screen->wasEntered);
 
     controller->setScreen(screen);
 
-    EXPECT_EQ(true, screen->entered);
+    EXPECT_EQ(true, screen->wasEntered);
 }
 
 TEST_F(ControllerTest, DisplayOn) {

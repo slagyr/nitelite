@@ -91,9 +91,9 @@ void Adafruit_GFX::writeLine(byte x0, byte y0, byte x1, byte y1, byte color) {
 
     for (; x0<=x1; x0++) {
         if (steep) {
-            drawPixel(y0, x0, WHITE);
+            drawPixel(y0, x0, color);
         } else {
-            drawPixel(x0, y0, WHITE);
+            drawPixel(x0, y0, color);
         }
         err -= dy;
         if (err < 0) {

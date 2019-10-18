@@ -4,6 +4,9 @@
 #include <oled/GFX/Canvas.h>
 #include "OledComm.h"
 
+#define BLACK 0
+#define WHITE 1
+
 class Oled : public Canvas {
 public:
     Oled(OledComm *comm);
