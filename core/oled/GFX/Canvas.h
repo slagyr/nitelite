@@ -5,7 +5,7 @@
 
 class Canvas : public Adafruit_GFX {
 public:
-    Canvas(int16_t w, int16_t h);
+    Canvas(short w, short h);
 
     ~Canvas();
 

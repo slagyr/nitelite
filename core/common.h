@@ -18,10 +18,10 @@ inline int availableMemory() {
 
 #ifndef PROGMEM
 //#warning "PROGMEM undefined"
-#define PROGMEM
+//#define PROGMEM
 //#include <avr/pgmspace.h>
-//#define __ATTR_PROGMEM__ __attribute__((__progmem__))
-//#define PROGMEM __ATTR_PROGMEM__
+#define __ATTR_PROGMEM__ __attribute__((__progmem__))
+#define PROGMEM __ATTR_PROGMEM__
 #endif
 
 

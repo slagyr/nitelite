@@ -17,6 +17,8 @@ public:
         controller->hardware = hardware;
         controller->display = display;
 
+        controller->setup();
+
         return controller;
     }
 

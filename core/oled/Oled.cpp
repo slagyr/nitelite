@@ -4,6 +4,7 @@
 
 Oled::Oled(OledComm *comm) : Canvas(128, 64) {
     this->comm = comm;
+    textInverted = false;
 }
 
 OledComm *Oled::getComm() const {

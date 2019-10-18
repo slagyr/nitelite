@@ -1,7 +1,7 @@
 #include "Canvas.h"
 
-Canvas::Canvas(int16_t w, int16_t h) : Adafruit_GFX(w, h) {
-    uint16_t bytes = ((w + 7) / 8) * h;
+Canvas::Canvas(short w, short h) : Adafruit_GFX(w, h) {
+    short bytes = ((w + 7) / 8) * h;
     if ((buffer = (byte *) malloc(bytes))) {
         for(int i = 0; i < bytes; i++)
             buffer[i] = 0;
@@ -41,7 +41,7 @@ byte Canvas::getPixel(byte x, byte y) {
 
 void Canvas::clear() {
     if(buffer) {
-        uint16_t bytes = ((WIDTH + 7) / 8) * HEIGHT;
+        short bytes = ((WIDTH + 7) / 8) * HEIGHT;
         for(int i = 0; i < bytes; i++)
             buffer[i] = 0;
 //        memset(buffer, 0x00, bytes);
