@@ -2,17 +2,15 @@
 #define NITELITE_MOCKCONTROLLER_H
 
 #include <Controller.h>
-#include "MockDisplay.h"
 #include "MockHardware.h"
+#include "MockOledComm.h"
 
 class MockController : public Controller {
 public:
 
-    MockDisplay *mockDisplay;
-
     static MockController *create() {
         Hardware *hardware = new MockHardware();
-        MockDisplay *display = new MockDisplay();
+        Oled *display = new Oled(new MockOledComm());
 
         MockController *controller = new MockController();
 

@@ -8,12 +8,12 @@ const char *RGBScreen::getName() {
 }
 
 void RGBScreen::enter() {
-    Display *display = controller->display;
-    display->showHome();
+//    Display *display = controller->display;
+//    display->showHome();
 }
 
 void RGBScreen::update() {
-    Display *display = controller->display;
+//    Display *display = controller->display;
 }
 
 unsigned long RGBScreen::getIdleTimeout() {

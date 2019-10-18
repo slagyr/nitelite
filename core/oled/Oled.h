@@ -1,9 +1,10 @@
 #ifndef OLED_H
 #define OLED_H
 
+#include <oled/GFX/Canvas.h>
 #include "OledComm.h"
 
-class Oled {
+class Oled : public Canvas {
 public:
     Oled(OledComm *comm);
 
@@ -13,27 +14,28 @@ public:
 
     void drawBitmap(byte x, byte page, byte widthPx, byte heightPx, const byte *bmp);
 
-    void clearScreen();
-
     void setFont(const byte font[]);
 
     byte getFontWidth() const;
 
     void writeString(byte x, byte row, const char *string);
 
-    void clear(byte x, byte row, byte widthPx, byte heightRows);
+    void setTextInverted(bool b);
 
-    void setInverted(bool b);
-
-    bool isInverted();
+    bool isTextInverted();
 
     void drawCanvas(byte x, byte row, byte widthPx, byte heightPx, byte *bytes);
+
+    void show();
+
+    void show(int x, int row, int width, int heightPx);
 
 private:
 
     OledComm *comm;
     const byte *font;
     byte fontWidth;
+    bool textInverted;
 
     void prepareFullScreenUpdate() const;
 

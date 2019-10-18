@@ -4,6 +4,7 @@
 #include <oled/OledFonts.h>
 #include "oled/Oled.h"
 #include "MockOledComm.h"
+#include "testutil.h"
 
 class OledTest : public ::testing::Test {
 protected:
@@ -39,6 +40,7 @@ TEST_F(OledTest, BitmapFullScreen) {
         bmp[i] = 0x42;
 
     oled->drawBitmap(0, 0, 128, 64, bmp);
+    oled->show();
 
     EXPECT_EQ(0x21, comm->commands->shift());
     EXPECT_EQ(0, comm->commands->shift());
@@ -46,6 +48,8 @@ TEST_F(OledTest, BitmapFullScreen) {
     EXPECT_EQ(0x22, comm->commands->shift());
     EXPECT_EQ(0, comm->commands->shift());
     EXPECT_EQ(7, comm->commands->shift());
+
+//    print_buffer(oled->getBuffer());
 
     EXPECT_EQ(1024, comm->transmission->size());
     for(int i = 0; i < 1024; i++)
@@ -58,6 +62,9 @@ TEST_F(OledTest, BitmapQuarterScreen) {
         bmp[i] = 0x42;
 
     oled->drawBitmap(32, 2, 64, 32, bmp);
+    oled->show(32, 2, 64, 32);
+
+//    print_buffer(oled->getBuffer());
 
     EXPECT_EQ(0x21, comm->commands->shift());
     EXPECT_EQ(32, comm->commands->shift());
@@ -71,20 +78,11 @@ TEST_F(OledTest, BitmapQuarterScreen) {
         EXPECT_EQ(0x42, comm->transmission->get(i));
 }
 
-
 TEST_F(OledTest, ClearScreen) {
-    oled->clearScreen();
+    oled->clear();
 
-    EXPECT_EQ(0x21, comm->commands->shift());
-    EXPECT_EQ(0, comm->commands->shift());
-    EXPECT_EQ(127, comm->commands->shift());
-    EXPECT_EQ(0x22, comm->commands->shift());
-    EXPECT_EQ(0, comm->commands->shift());
-    EXPECT_EQ(7, comm->commands->shift());
-
-    EXPECT_EQ(1024, comm->transmission->size());
     for(int i = 0; i < 1024; i++)
-        EXPECT_EQ(0, comm->transmission->get(i));
+        EXPECT_EQ(0, oled->getBuffer()[i]);
 }
 
 TEST_F(OledTest, DefaultFont) {
@@ -103,67 +101,43 @@ TEST_F(OledTest, WriteString) {
     oled->setFont(oled_font6x8);
     oled->writeString(42, 3, "Hello");
 
-    EXPECT_EQ(0x21, comm->commands->shift());
-    EXPECT_EQ(42, comm->commands->shift());
-    EXPECT_EQ(71, comm->commands->shift());
-    EXPECT_EQ(0x22, comm->commands->shift());
-    EXPECT_EQ(3, comm->commands->shift());
-    EXPECT_EQ(3, comm->commands->shift());
-
-    EXPECT_EQ(30, comm->transmission->size());
     // H
-    EXPECT_EQ(0, comm->transmission->shift());
-    EXPECT_EQ(0x7F, comm->transmission->shift());
-    EXPECT_EQ(0x08, comm->transmission->shift());
-    EXPECT_EQ(0x08, comm->transmission->shift());
-    EXPECT_EQ(0x08, comm->transmission->shift());
-    EXPECT_EQ(0x7F, comm->transmission->shift());
+    EXPECT_EQ(0x00, oled->getBuffer()[426]);
+    EXPECT_EQ(0x7F, oled->getBuffer()[427]);
+    EXPECT_EQ(0x08, oled->getBuffer()[428]);
+    EXPECT_EQ(0x08, oled->getBuffer()[429]);
+    EXPECT_EQ(0x08, oled->getBuffer()[430]);
+    EXPECT_EQ(0x7F, oled->getBuffer()[431]);
     // e
-    EXPECT_EQ(0, comm->transmission->shift());
-    EXPECT_EQ(0x38, comm->transmission->shift());
-    EXPECT_EQ(0x54, comm->transmission->shift());
-    EXPECT_EQ(0x54, comm->transmission->shift());
-    EXPECT_EQ(0x54, comm->transmission->shift());
-    EXPECT_EQ(0x18, comm->transmission->shift());
-}
-
-TEST_F(OledTest, Clear) {
-    oled->clear(12, 3, 24, 3);
-
-    EXPECT_EQ(0x21, comm->commands->shift());
-    EXPECT_EQ(12, comm->commands->shift());
-    EXPECT_EQ(35, comm->commands->shift());
-    EXPECT_EQ(0x22, comm->commands->shift());
-    EXPECT_EQ(3, comm->commands->shift());
-    EXPECT_EQ(5, comm->commands->shift());
-
-    EXPECT_EQ(72, comm->transmission->size());
-    for(int i = 0; i < 72; i++)
-        EXPECT_EQ(0, comm->transmission->get(i));
+    EXPECT_EQ(0x00, oled->getBuffer()[432]);
+    EXPECT_EQ(0x38, oled->getBuffer()[433]);
+    EXPECT_EQ(0x54, oled->getBuffer()[434]);
+    EXPECT_EQ(0x54, oled->getBuffer()[435]);
+    EXPECT_EQ(0x54, oled->getBuffer()[436]);
+    EXPECT_EQ(0x18, oled->getBuffer()[437]);
 }
 
 TEST_F(OledTest, InvertedText) {
     oled->setFont(oled_font6x8);
 
-    EXPECT_EQ(false, oled->isInverted());
-    oled->setInverted(true);
-    EXPECT_EQ(true, oled->isInverted());
+    EXPECT_EQ(false, oled->isTextInverted());
+    oled->setTextInverted(true);
+    EXPECT_EQ(true, oled->isTextInverted());
 
     oled->writeString(42, 3, "Hello");
 
-    EXPECT_EQ(30, comm->transmission->size());
     // H
-    EXPECT_EQ(0xFF, comm->transmission->shift());
-    EXPECT_EQ(0x80, comm->transmission->shift());
-    EXPECT_EQ(0xF7, comm->transmission->shift());
-    EXPECT_EQ(0xF7, comm->transmission->shift());
-    EXPECT_EQ(0xF7, comm->transmission->shift());
-    EXPECT_EQ(0x80, comm->transmission->shift());
+    EXPECT_EQ(0xFF, oled->getBuffer()[426]);
+    EXPECT_EQ(0x80, oled->getBuffer()[427]);
+    EXPECT_EQ(0xF7, oled->getBuffer()[428]);
+    EXPECT_EQ(0xF7, oled->getBuffer()[429]);
+    EXPECT_EQ(0xF7, oled->getBuffer()[430]);
+    EXPECT_EQ(0x80, oled->getBuffer()[431]);
     // e
-    EXPECT_EQ(0xFF, comm->transmission->shift());
-    EXPECT_EQ(0xC7, comm->transmission->shift());
-    EXPECT_EQ(0xAB, comm->transmission->shift());
-    EXPECT_EQ(0xAB, comm->transmission->shift());
-    EXPECT_EQ(0xAB, comm->transmission->shift());
-    EXPECT_EQ(0xE7, comm->transmission->shift());
+    EXPECT_EQ(0xFF, oled->getBuffer()[432]);
+    EXPECT_EQ(0xC7, oled->getBuffer()[433]);
+    EXPECT_EQ(0xAB, oled->getBuffer()[434]);
+    EXPECT_EQ(0xAB, oled->getBuffer()[435]);
+    EXPECT_EQ(0xAB, oled->getBuffer()[436]);
+    EXPECT_EQ(0xE7, oled->getBuffer()[437]);
 }

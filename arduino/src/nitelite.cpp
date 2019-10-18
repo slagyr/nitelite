@@ -2,28 +2,11 @@
 #include <avr/pgmspace.h>
 #include "common.h"
 #include <Controller.h>
-#include "OLEDDisplay.h"
 #include "ArduinoHardware.h"
 #include "I2cOledComm.h"
 //#include "EEPROMConfig.h"
 
-class HackDisplay : public Display {
-public:
-    void setup() override {
-
-    }
-
-    void splash() override {
-
-    }
-
-    void showHome() override {
-
-    }
-
-};
-
-Display *display;
+Oled *display;
 ArduinoHardware *hardware;
 Controller *controller;
 
@@ -32,12 +15,12 @@ void setup() {
     while (!Serial);
 
     controller = new Controller();
-    controller->display = new OLEDDisplay();
-//    controller->display = new HackDisplay();
+    I2cOledComm *oledComm = new I2cOledComm();
+    controller->display = new Oled(oledComm);
     controller->hardware = new ArduinoHardware();
     controller->setup();
     controller->displayOn();
-    controller->setScreen(controller->splashScreen);
+    controller->setTempScreen(controller->splashScreen, 3000);
 
     Serial.print("availableMemory(): ");
     Serial.println(availableMemory());

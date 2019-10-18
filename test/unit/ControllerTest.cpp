@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 #include "Controller.h"
+#include "oled/Oled.h"
+#include "MockOledComm.h"
 #include "MockHardware.h"
-#include "MockDisplay.h"
 #include "MockScreen.h"
 
 class ControllerTest : public ::testing::Test {
@@ -9,14 +10,16 @@ protected:
 
     Controller *controller;
     MockHardware *hardware;
-    MockDisplay *display;
+    MockOledComm *oledComm;
+    Oled *display;
     MockScreen *screen;
 
     virtual void SetUp() {
         controller = new Controller();
 
         controller->hardware = hardware = new MockHardware();
-        controller->display = display = new MockDisplay();
+        oledComm = new MockOledComm();
+        controller->display = display = new Oled(oledComm);
 
         screen = new MockScreen(controller);
         controller->setup();
@@ -26,6 +29,7 @@ protected:
         delete hardware;
         delete controller;
         delete display;
+        delete oledComm;
         delete screen;
     }
 };
@@ -33,7 +37,7 @@ protected:
 TEST_F(ControllerTest, Screens) {
     EXPECT_STREQ("Splash", controller->splashScreen->getName());
     EXPECT_STREQ("RGB", controller->rgbScreen->getName());
-    EXPECT_EQ(controller->splashScreen, controller->getScreen());
+    EXPECT_EQ(controller->rgbScreen, controller->getScreen());
 }
 
 TEST_F(ControllerTest, Modes) {
@@ -51,16 +55,18 @@ TEST_F(ControllerTest, Setup) {
     EXPECT_EQ("OUTPUT", hardware->pinModes[G_OUT_PIN]);
     EXPECT_EQ("OUTPUT", hardware->pinModes[B_OUT_PIN]);
     EXPECT_EQ("OUTPUT", hardware->pinModes[OLED_PIN]);
-    EXPECT_EQ(false, display->wasSetup);
+    EXPECT_EQ(false, oledComm->wasSetup);
 }
 
-TEST_F(ControllerTest, ScreenTimeout) {
-    screen->timeout = 123;
-    controller->setScreen(screen);
+TEST_F(ControllerTest, TempScreenTimeout) {
+    controller->setTempScreen(screen, 123);
+
+    EXPECT_STREQ("Mock Screen", controller->getActiveScreen()->getName());
+    EXPECT_EQ(true, screen->entered);
 
     controller->tick(1111);
 
-    EXPECT_STREQ("RGB", controller->getScreen()->getName());
+    EXPECT_STREQ("RGB", controller->getActiveScreen()->getName());
 }
 
 TEST_F(ControllerTest, EnteringScreen) {
@@ -75,7 +81,7 @@ TEST_F(ControllerTest, DisplayOn) {
     controller->displayOn();
 
     EXPECT_EQ("HIGH", hardware->digitalWrites[OLED_PIN]);
-    EXPECT_EQ(true, display->wasSetup);
+    EXPECT_EQ(true, oledComm->wasSetup);
 }
 
 TEST_F(ControllerTest, DisplayOff) {

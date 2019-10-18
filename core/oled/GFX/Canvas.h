@@ -13,9 +13,11 @@ public:
 
     void drawPixel(byte x, byte y, byte color) override;
 
+    byte getPixel(byte x, byte y);
+
     void clear();
 
-private:
+protected:
     byte *buffer;
 };
 

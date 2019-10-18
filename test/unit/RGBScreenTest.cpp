@@ -7,12 +7,10 @@ protected:
 
     MockController *controller;
     Screen *screen;
-    MockDisplay *display;
 
     virtual void SetUp() {
         controller = MockController::create();
         screen = new RGBScreen(controller);
-        display = controller->mockDisplay;
     }
 
     virtual void TearDown() {

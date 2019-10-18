@@ -2,7 +2,7 @@
 #define NITELITE_CONTROLLER_H
 
 #include "Hardware.h"
-#include "Display.h"
+#include "oled/Oled.h"
 #include "Screen.h"
 #include "Switch.h"
 #include "Context.h"
@@ -20,9 +20,12 @@ public:
 
     void setScreen(Screen *screen);
 
+    void setTempScreen(Screen *screen, int timeoutMillis);
+
     void setMode(Mode *m);
 
     Screen *getScreen();
+    Screen *getActiveScreen();
 
     Mode *getMode();
 
@@ -43,7 +46,7 @@ public:
     LinkedList<Mode *> *modes;
 
     Hardware *hardware;
-    Display *display;
+    Oled *display;
 
     int redInput;
     int greenInput;
@@ -51,11 +54,13 @@ public:
     int red;
     int green;
     int blue;
+    int tempScreenTimeout;
 
 
 protected:
 
     Screen *screen;
+    Screen *tempScreen;
     Mode *mode;
 
 private:

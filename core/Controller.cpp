@@ -11,6 +11,7 @@ Controller::Controller() {
     rgbScreen = new RGBScreen(this);
     modes = new LinkedList<Mode*>();
     modes->add(new YourColorMode(this));
+    tempScreenTimeout = 0;
 }
 
 void Controller::setup() {
@@ -22,7 +23,7 @@ void Controller::setup() {
     hardware->pinToOutput(B_OUT_PIN);
     hardware->pinToOutput(OLED_PIN);
     setMode(modes->get(0));
-    setScreen(splashScreen);
+    setScreen(rgbScreen);
 }
 
 void Controller::setScreen(Screen *screen) {
@@ -32,6 +33,18 @@ void Controller::setScreen(Screen *screen) {
 
 Screen *Controller::getScreen() {
     return screen;
+}
+
+Screen *Controller::getActiveScreen() {
+    if(tempScreen != nullptr)
+        return tempScreen;
+    return screen;
+}
+
+void Controller::setTempScreen(Screen *screen, int timeoutMillis) {
+    tempScreen = screen;
+    tempScreenTimeout = timeoutMillis;
+    tempScreen->enter();
 }
 
 Mode *Controller::getMode() {
@@ -45,9 +58,11 @@ void Controller::setMode(Mode *m) {
 
 void Controller::tick(unsigned long millis) {
     screen->update();
+    mode->tick();
 
-    if (millis > lastUserEventTime + screen->getIdleTimeout()) {
-        setScreen(rgbScreen);
+    if (tempScreen != nullptr && millis > lastUserEventTime + tempScreenTimeout) {
+        tempScreen = nullptr;
+        screen->enter();
         lastUserEventTime = millis;
     }
 }

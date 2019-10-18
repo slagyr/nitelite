@@ -2,7 +2,6 @@
 #define NITELITE_CONTEXT_H
 
 #include "Hardware.h"
-#include "Display.h"
 #include "Switch.h"
 #include "Screen.h"
 
