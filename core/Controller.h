@@ -10,10 +10,13 @@
 #include "LinkedList.h"
 #include "Button.h"
 
+#define MODES 2
+
 class Controller {
 
 public:
-    Controller();
+    Controller(Hardware *hardware);
+    ~Controller();
 
     void setup();
 
@@ -26,6 +29,7 @@ public:
     void setMode(Mode *m);
 
     Screen *getScreen();
+
     Screen *getActiveScreen();
 
     Mode *getMode();
@@ -36,10 +40,17 @@ public:
 
     void readRGB();
 
-    void writeRGB(int r, int g, int b);
+    void writeRGB(byte r, byte g, byte b);
+
+    void writeRGB() const;
 
     void writeRGBInputs();
 
+    byte getRed();
+
+    byte getGreen();
+
+    byte getBlue();
 
     Screen *splashScreen;
     Screen *rgbScreen;
@@ -55,10 +66,11 @@ public:
     byte redInput;
     byte greenInput;
     byte blueInput;
-    byte red;
-    byte green;
-    byte blue;
+    float red;
+    float green;
+    float blue;
     short tempScreenTimeout;
+    short modeIndex;
 
 protected:
 
@@ -73,6 +85,8 @@ private:
     void loadConfig() const;
 
     byte analogToDigitalColor(int a, short min, short max) const;
+
+    byte ftob(float red) const;
 };
 
 

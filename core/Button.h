@@ -15,6 +15,7 @@ public:
     bool pressed();
     bool isDown();
     void tick();
+    void force(bool pressed);
 
 private:
     Hardware* hardware;

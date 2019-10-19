@@ -1,21 +1,35 @@
 #include <screen/SplashScreen.h>
 #include <screen/RGBScreen.h>
 #include <mode/YourColorMode.h>
+#include <mode/YourFadeMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
 
-Controller::Controller() {
-    lastUserEventTime = 0;
+
+Controller::Controller(Hardware *hardware) {
+    this->hardware = hardware;
+
     splashScreen = new SplashScreen(this);
     rgbScreen = new RGBScreen(this);
-    modes = new Mode*[10];
+
+    modes = new Mode*[MODES];
     modes[0] = new YourColorMode(this);
-    tempScreenTimeout = 0;
-    tempScreen = nullptr;
+    modes[1] = new YourFadeMode(this);
+    modeIndex = 0;
+
     config = new Config();
     upButton = new Button(hardware, UP_PIN);
     downButton = new Button(hardware, DOWN_PIN);
+
+    lastUserEventTime = 0;
+    tempScreenTimeout = 0;
+    tempScreen = nullptr;
+}
+
+Controller::~Controller() {
+    delete upButton;
+    delete downButton;
 }
 
 void Controller::setup() {
@@ -48,7 +62,8 @@ void Controller::loadConfig() const {
 
 void Controller::setScreen(Screen *screen) {
     this->screen = screen;
-    screen->enter();
+    if(tempScreen == nullptr)
+        screen->enter();
 }
 
 Screen *Controller::getScreen() {
@@ -78,6 +93,22 @@ void Controller::setMode(Mode *m) {
 
 void Controller::tick(unsigned long millis) {
     getActiveScreen()->update(); // TODO is this needed?
+
+    upButton->tick();
+    downButton->tick();
+    if(downButton->pressed()) {
+        modeIndex++;
+        if(modeIndex >= MODES)
+            modeIndex = 0;
+        setMode(modes[modeIndex]);
+    }
+    if(upButton->pressed()) {
+        modeIndex--;
+        if(modeIndex < 0)
+            modeIndex = MODES - 1;
+        setMode(modes[modeIndex]);
+    }
+
     mode->tick();
 
     if (tempScreen != nullptr && millis > lastUserEventTime + tempScreenTimeout) {
@@ -117,16 +148,40 @@ byte Controller::analogToDigitalColor(int a, short min, short max) const {
     return (byte) value;
 }
 
-void Controller::writeRGB(int r, int g, int b) {
+void Controller::writeRGB(byte r, byte g, byte b) {
     red = r;
     green = g;
     blue = b;
+    writeRGB();
+}
 
-    hardware->analogWritePin(R_OUT_PIN, red);
-    hardware->analogWritePin(G_OUT_PIN, green);
-    hardware->analogWritePin(B_OUT_PIN, blue);
+void Controller::writeRGB() const {
+    hardware->analogWritePin(R_OUT_PIN, ftob(red));
+    hardware->analogWritePin(G_OUT_PIN, ftob(green));
+    hardware->analogWritePin(B_OUT_PIN, ftob(blue));
 }
 
 void Controller::writeRGBInputs() {
     writeRGB(redInput, greenInput, blueInput);
 }
+
+byte Controller::ftob(float color) const {
+    if(color < 0)
+        return 0;
+    if(color > 254.5)
+        return 255;
+    return (byte)(color + 0.5);
+}
+
+byte Controller::getRed() {
+    return ftob(red);
+}
+
+byte Controller::getGreen() {
+    return ftob(green);
+}
+
+byte Controller::getBlue() {
+    return ftob(blue);
+}
+

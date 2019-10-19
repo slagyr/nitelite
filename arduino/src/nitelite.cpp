@@ -16,8 +16,8 @@ void setup() {
     pinMode(UP_PIN, INPUT_PULLUP);
     pinMode(DOWN_PIN, INPUT_PULLUP);
 
-    controller = new Controller();
-    controller->hardware = new ArduinoHardware();
+    Hardware *hardware = new ArduinoHardware();
+    controller = new Controller(hardware);
     I2cOledComm *oledComm = new I2cOledComm();
     controller->display = new Oled(controller->hardware, oledComm);
     controller->setup();

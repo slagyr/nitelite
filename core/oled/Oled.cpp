@@ -2,7 +2,9 @@
 #include "string.h"
 #include "oled/OledFonts.h"
 
-Oled::Oled(Hardware *hardware, OledComm *comm) : hardware(hardware), comm(comm) {
+Oled::Oled(Hardware *hardware, OledComm *comm) {
+    this->hardware = hardware;
+    this->comm = comm;
     rowBuffer = new Canvas(128, 8);
 }
 

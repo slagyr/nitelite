@@ -33,3 +33,7 @@ void Button::tick() {
 bool Button::isDown() {
     return hardware->readDigitalPin(_pin) == 0;
 }
+
+void Button::force(bool pressed) {
+    _pressed = pressed;
+}

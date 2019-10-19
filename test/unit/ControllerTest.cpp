@@ -15,9 +15,9 @@ protected:
     MockScreen *screen;
 
     virtual void SetUp() {
-        controller = new Controller();
+        hardware = new MockHardware();
+        controller = new Controller(hardware);
 
-        controller->hardware = hardware = new MockHardware();
         oledComm = new MockOledComm();
         controller->display = display = new Oled(hardware, oledComm);
 
@@ -47,7 +47,9 @@ TEST_F(ControllerTest, Buttons) {
 
 TEST_F(ControllerTest, Modes) {
     EXPECT_EQ("Your Color", controller->modes[0]->getName());
+    EXPECT_EQ("Your Fade", controller->modes[1]->getName());
     EXPECT_EQ("Your Color", controller->getMode()->getName());
+    EXPECT_EQ(0, controller->modeIndex);
 }
 
 TEST_F(ControllerTest, Setup) {
@@ -215,3 +217,30 @@ TEST_F(ControllerTest, WriteRGB) {
     EXPECT_EQ(123, hardware->analogWrites[B_OUT_PIN].front());
 }
 
+TEST_F(ControllerTest, DownPressed) {
+    controller->downButton->force(true);
+
+    controller->tick(1);
+
+    EXPECT_EQ(1, controller->modeIndex);
+    EXPECT_EQ("Your Fade", controller->getMode()->getName());
+
+    for (int i = 1; i < MODES; i++) {
+        controller->downButton->force(true);
+        controller->tick(i);
+    }
+
+    EXPECT_EQ(0, controller->modeIndex);
+    EXPECT_EQ("Your Color", controller->getMode()->getName());
+}
+
+TEST_F(ControllerTest, UpPressed) {
+
+    for (int i = 0; i < MODES - 1; i++) {
+        controller->upButton->force(true);
+        controller->tick(i);
+    }
+
+    EXPECT_EQ(1, controller->modeIndex);
+    EXPECT_EQ("Your Fade", controller->getMode()->getName());
+}

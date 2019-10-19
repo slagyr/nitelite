@@ -12,9 +12,8 @@ public:
         Hardware *hardware = new MockHardware();
         Oled *display = new Oled(hardware, new MockOledComm());
 
-        MockController *controller = new MockController();
+        MockController *controller = new MockController(hardware);
 
-        controller->hardware = hardware;
         controller->display = display;
 
         controller->setup();
@@ -22,7 +21,7 @@ public:
         return controller;
     }
 
-    MockController() : Controller() {}
+    MockController(Hardware *hardware) : Controller(hardware) {}
 };
 
 #endif
