@@ -2,6 +2,7 @@
 #include <screen/RGBScreen.h>
 #include <mode/YourColorMode.h>
 #include <mode/YourFadeMode.h>
+#include <mode/RGBFadeMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
@@ -16,6 +17,7 @@ Controller::Controller(Hardware *hardware) {
     modes = new Mode*[MODES];
     modes[0] = new YourColorMode(this);
     modes[1] = new YourFadeMode(this);
+    modes[2] = new RGBFadeMode(this);
     modeIndex = 0;
 
     config = new Config();

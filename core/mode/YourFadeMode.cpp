@@ -7,7 +7,7 @@ YourFadeMode::YourFadeMode(Controller *controller) : Mode(controller) {
 }
 
 const char *YourFadeMode::getName() {
-    return "Your Fade";
+    return "Your Color Fade";
 }
 
 void YourFadeMode::enter() {
