@@ -71,6 +71,8 @@ private:
     unsigned long lastUserEventTime;
 
     void loadConfig() const;
+
+    byte analogToDigitalColor(int a, short min, short max) const;
 };
 
 

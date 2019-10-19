@@ -163,6 +163,42 @@ TEST_F(ControllerTest, ReadRGB) {
     EXPECT_EQ(255, controller->blueInput);
 }
 
+TEST_F(ControllerTest, ReadRGBAlteredConfig) {
+    controller->config->rMin = 200;
+    controller->config->rMax = 400;
+    controller->config->gMin = 100;
+    controller->config->gMax = 800;
+    controller->config->bMin = 0;
+    controller->config->bMax = 1023;
+    hardware->analogReads[R_IN_PIN].push(300);
+    hardware->analogReads[G_IN_PIN].push(300);
+    hardware->analogReads[B_IN_PIN].push(300);
+
+    controller->readRGB();
+
+    EXPECT_EQ(127, controller->redInput);
+    EXPECT_EQ(72, controller->greenInput);
+    EXPECT_EQ(74, controller->blueInput);
+}
+
+TEST_F(ControllerTest, ReadRGBDoesntExceedLimits) {
+    controller->config->rMin = 200;
+    controller->config->rMax = 400;
+    controller->config->gMin = 100;
+    controller->config->gMax = 800;
+    controller->config->bMin = 0;
+    controller->config->bMax = 1023;
+    hardware->analogReads[R_IN_PIN].push(1023);
+    hardware->analogReads[G_IN_PIN].push(0);
+    hardware->analogReads[B_IN_PIN].push(1024);
+
+    controller->readRGB();
+
+    EXPECT_EQ(255, controller->redInput);
+    EXPECT_EQ(0, controller->greenInput);
+    EXPECT_EQ(255, controller->blueInput);
+}
+
 TEST_F(ControllerTest, WriteRGB) {
     controller->writeRGB(100, 200, 123);
 

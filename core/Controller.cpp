@@ -36,7 +36,6 @@ void Controller::setup() {
 void Controller::loadConfig() const {
     hardware->loadConfig(config);
     if (config->version != CONFIG_VERSION) {
-        hardware->println("Wrong config version");
         config->version = CONFIG_VERSION;
         config->rMin = 0;
         config->gMin = 0;
@@ -104,9 +103,18 @@ void Controller::readRGB() {
     int green = hardware->readAnalogPin(G_IN_PIN);
     int blue = hardware->readAnalogPin(B_IN_PIN);
 
-    redInput = 1.0 * red / 1023  * 255;
-    greenInput = 1.0 * green / 1023 * 255;
-    blueInput = 1.0 * blue / 1023 * 255;
+    redInput = analogToDigitalColor(red, config->rMin, config->rMax);
+    greenInput = analogToDigitalColor(green, config->gMin, config->gMax);
+    blueInput = analogToDigitalColor(blue, config->bMin, config->bMax);
+}
+
+byte Controller::analogToDigitalColor(int a, short min, short max) const {
+    double value = 1.0 * (a - min) / (max - min) * 255;
+    if(value > 255)
+        value = 255;
+    if(value < 0)
+        value = 0;
+    return (byte) value;
 }
 
 void Controller::writeRGB(int r, int g, int b) {

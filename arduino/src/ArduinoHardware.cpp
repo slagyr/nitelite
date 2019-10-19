@@ -20,7 +20,11 @@ int ArduinoHardware::readDigitalPin(byte pin) {
 }
 
 int ArduinoHardware::readAnalogPin(byte pin) {
-    return analogRead(pin);
+    int total = 0;
+    for(int i = 0; i < 10; i++){
+        total += analogRead(pin);
+    }
+    return total / 10;
 }
 
 unsigned long ArduinoHardware::getMillis() {
