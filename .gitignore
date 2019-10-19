@@ -5,3 +5,4 @@ cmake-build-nanoatmega328
 .piolibdeps
 .pioenvs
 .DS_Store
+pcb

@@ -1,5 +1,6 @@
 #include "ArduinoHardware.h"
 #include "Arduino.h"
+#include <EEPROM.h>
 
 void ArduinoHardware::pinToInput(byte pin) {
     pinMode(pin, INPUT);
@@ -57,5 +58,17 @@ void ArduinoHardware::print(int value) {
 void ArduinoHardware::print(float value) {
     Serial.print(value);
 
+}
+
+void ArduinoHardware::saveConfig(Config *conf) {
+    EEPROM.put(CONFIG_ADDRESS, *conf);
+}
+
+void ArduinoHardware::loadConfig(Config *conf) {
+    EEPROM.get(CONFIG_ADDRESS, *conf);
+}
+
+byte ArduinoHardware::pmgByte(const byte *bmp, int i) {
+    return pgm_read_byte(bmp + i);
 }
 

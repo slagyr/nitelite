@@ -16,7 +16,7 @@ public:
 
     void update() override;
 
-    void writeColorValue(int row, const char *colorVal) const;
+    void writeColorValue(int row, const char *color, byte colorCol, const char *colorVal) const;
 };
 
 

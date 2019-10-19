@@ -19,7 +19,7 @@ protected:
 
         controller->hardware = hardware = new MockHardware();
         oledComm = new MockOledComm();
-        controller->display = display = new Oled(oledComm);
+        controller->display = display = new Oled(hardware, oledComm);
 
         screen = new MockScreen(controller);
         controller->setup();
@@ -40,6 +40,11 @@ TEST_F(ControllerTest, Screens) {
     EXPECT_EQ(controller->rgbScreen, controller->getScreen());
 }
 
+TEST_F(ControllerTest, Buttons) {
+    EXPECT_EQ(UP_PIN, controller->upButton->pin());
+    EXPECT_EQ(DOWN_PIN, controller->downButton->pin());
+}
+
 TEST_F(ControllerTest, Modes) {
     EXPECT_EQ("Your Color", controller->modes[0]->getName());
     EXPECT_EQ("Your Color", controller->getMode()->getName());
@@ -56,6 +61,40 @@ TEST_F(ControllerTest, Setup) {
     EXPECT_EQ("OUTPUT", hardware->pinModes[B_OUT_PIN]);
     EXPECT_EQ("OUTPUT", hardware->pinModes[OLED_PIN]);
     EXPECT_EQ(false, oledComm->wasSetup);
+}
+
+TEST_F(ControllerTest, SetupDefaultConfig) {
+    controller->setup();
+
+    EXPECT_EQ(1, controller->config->version);
+    EXPECT_EQ(0, controller->config->rMin);
+    EXPECT_EQ(0, controller->config->gMin);
+    EXPECT_EQ(0, controller->config->bMin);
+    EXPECT_EQ(1023, controller->config->rMax);
+    EXPECT_EQ(1023, controller->config->gMax);
+    EXPECT_EQ(1023, controller->config->bMax);
+}
+
+TEST_F(ControllerTest, SetupSavedConfig) {
+    Config conf;
+    conf.version = CONFIG_VERSION;
+    conf.rMin = 1;
+    conf.gMin = 2;
+    conf.bMin = 3;
+    conf.rMax = 997;
+    conf.gMax = 998;
+    conf.bMax = 999;
+    hardware->saveConfig(&conf);
+
+    controller->setup();
+
+    EXPECT_EQ(1, controller->config->version);
+    EXPECT_EQ(1, controller->config->rMin);
+    EXPECT_EQ(2, controller->config->gMin);
+    EXPECT_EQ(3, controller->config->bMin);
+    EXPECT_EQ(997, controller->config->rMax);
+    EXPECT_EQ(998, controller->config->gMax);
+    EXPECT_EQ(999, controller->config->bMax);
 }
 
 TEST_F(ControllerTest, TempScreenTimeout) {

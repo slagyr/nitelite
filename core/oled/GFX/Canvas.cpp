@@ -1,4 +1,6 @@
 #include "Canvas.h"
+#include "string.h"
+#include "oled/OledFonts.h"
 
 Canvas::Canvas(short w, short h) : Adafruit_GFX(w, h) {
     short bytes = ((w + 7) / 8) * h;
@@ -47,3 +49,4 @@ void Canvas::clear() {
 //        memset(buffer, 0x00, bytes);
     }
 }
+

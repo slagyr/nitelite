@@ -34,6 +34,12 @@ public:
     string digitalWrites[40];
     vector<PlayedNote *> notesPlayed;
     vector<unsigned long> delays;
+    Config *config;
+
+    MockHardware() {
+        config = new Config();
+        config->version = 0;
+    }
 
     void pinToInput(byte pin) override { pinModes[pin] = "INPUT"; }
 
@@ -90,6 +96,19 @@ public:
     }
 
     void sleep(unsigned long duration) override { delays.push_back(duration); }
+
+    void saveConfig(Config *conf) override {
+        memcpy(config, conf, sizeof(Config));
+    }
+
+    void loadConfig(Config *conf) override {
+        if(config != nullptr)
+            memcpy(conf, config, sizeof(Config));
+    }
+
+    byte pmgByte(const byte *bmp, int i) override {
+        return bmp[i];
+    }
 };
 
 #endif

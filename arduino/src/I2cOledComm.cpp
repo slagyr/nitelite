@@ -50,6 +50,3 @@ void I2cOledComm::endTransmission() {
     Wire.endTransmission();
 }
 
-byte I2cOledComm::pmgByte(const byte *bmp, int i) {
-    return pgm_read_byte(bmp + i);
-}

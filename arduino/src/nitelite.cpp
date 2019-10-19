@@ -2,25 +2,45 @@
 #include <avr/pgmspace.h>
 #include "common.h"
 #include <Controller.h>
+#include <mode/ConfigMode.h>
 #include "ArduinoHardware.h"
 #include "I2cOledComm.h"
-//#include "EEPROMConfig.h"
+#include "Button.h"
 
-Oled *display;
-ArduinoHardware *hardware;
 Controller *controller;
 
 void setup() {
     Serial.begin(9600);
     while (!Serial);
 
+    pinMode(UP_PIN, INPUT_PULLUP);
+    pinMode(DOWN_PIN, INPUT_PULLUP);
+
     controller = new Controller();
-    I2cOledComm *oledComm = new I2cOledComm();
-    controller->display = new Oled(oledComm);
     controller->hardware = new ArduinoHardware();
+    I2cOledComm *oledComm = new I2cOledComm();
+    controller->display = new Oled(controller->hardware, oledComm);
     controller->setup();
     controller->displayOn();
     controller->setTempScreen(controller->splashScreen, 3000);
+
+    if(controller->upButton->isDown())
+        controller->setMode(new ConfigMode(controller));
+
+    Serial.print("controller->config->version: ");
+    Serial.println(controller->config->version);
+    Serial.print("controller->config->rMin: ");
+    Serial.println(controller->config->rMin);
+    Serial.print("controller->config->gMin: ");
+    Serial.println(controller->config->gMin);
+    Serial.print("controller->config->bMin: ");
+    Serial.println(controller->config->bMin);
+    Serial.print("controller->config->rMax: ");
+    Serial.println(controller->config->rMax);
+    Serial.print("controller->config->gMax: ");
+    Serial.println(controller->config->gMax);
+    Serial.print("controller->config->bMax: ");
+    Serial.println(controller->config->bMax);
 
     Serial.print("availableMemory(): ");
     Serial.println(availableMemory());

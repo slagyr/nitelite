@@ -12,6 +12,10 @@ Controller::Controller() {
     modes = new Mode*[10];
     modes[0] = new YourColorMode(this);
     tempScreenTimeout = 0;
+    tempScreen = nullptr;
+    config = new Config();
+    upButton = new Button(hardware, UP_PIN);
+    downButton = new Button(hardware, DOWN_PIN);
 }
 
 void Controller::setup() {
@@ -22,8 +26,25 @@ void Controller::setup() {
     hardware->pinToOutput(G_OUT_PIN);
     hardware->pinToOutput(B_OUT_PIN);
     hardware->pinToOutput(OLED_PIN);
+
+    loadConfig();
+
     setMode(modes[0]);
     setScreen(rgbScreen);
+}
+
+void Controller::loadConfig() const {
+    hardware->loadConfig(config);
+    if (config->version != CONFIG_VERSION) {
+        hardware->println("Wrong config version");
+        config->version = CONFIG_VERSION;
+        config->rMin = 0;
+        config->gMin = 0;
+        config->bMin = 0;
+        config->rMax = 1023;
+        config->gMax = 1023;
+        config->bMax = 1023;
+    }
 }
 
 void Controller::setScreen(Screen *screen) {
@@ -57,7 +78,7 @@ void Controller::setMode(Mode *m) {
 }
 
 void Controller::tick(unsigned long millis) {
-    getActiveScreen()->update();
+    getActiveScreen()->update(); // TODO is this needed?
     mode->tick();
 
     if (tempScreen != nullptr && millis > lastUserEventTime + tempScreenTimeout) {
@@ -71,6 +92,7 @@ void Controller::displayOn() {
     hardware->setPinHigh(OLED_PIN);
     hardware->sleep(100);
     display->setup();
+    getActiveScreen()->enter();
 }
 
 void Controller::displayOff() {

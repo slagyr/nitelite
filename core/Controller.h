@@ -8,6 +8,7 @@
 #include "Context.h"
 #include "Mode.h"
 #include "LinkedList.h"
+#include "Button.h"
 
 class Controller {
 
@@ -47,6 +48,9 @@ public:
 
     Hardware *hardware;
     Oled *display;
+    Config *config;
+    Button *upButton;
+    Button *downButton;
 
     byte redInput;
     byte greenInput;
@@ -55,7 +59,6 @@ public:
     byte green;
     byte blue;
     short tempScreenTimeout;
-
 
 protected:
 
@@ -67,6 +70,7 @@ private:
 
     unsigned long lastUserEventTime;
 
+    void loadConfig() const;
 };
 
 

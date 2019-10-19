@@ -3,6 +3,9 @@
 
 #include "Adafruit_GFX.h"
 
+#define WHITE 1
+#define BLACK 0
+
 class Canvas : public Adafruit_GFX {
 public:
     Canvas(short w, short h);

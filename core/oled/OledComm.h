@@ -17,8 +17,6 @@ public:
 
     virtual void endTransmission() = 0;
 
-    virtual byte pmgByte(const byte *bpm, int i) = 0;
-
     void setInverted(bool inverted) {
         OledComm::inverted = inverted;
     }

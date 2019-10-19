@@ -1,10 +1,9 @@
 #include "Oled.h"
 #include "string.h"
-#include "OledFonts.h"
+#include "oled/OledFonts.h"
 
-Oled::Oled(OledComm *comm) : Canvas(128, 64) {
-    this->comm = comm;
-    textInverted = false;
+Oled::Oled(Hardware *hardware, OledComm *comm) : hardware(hardware), comm(comm) {
+    rowBuffer = new Canvas(128, 8);
 }
 
 OledComm *Oled::getComm() const {
@@ -39,19 +38,18 @@ void Oled::setup() {
     comm->sendCommand(0xA4);        // display on (0xA4 from RAM, 0xA5 force ON)
     comm->sendCommand(0x2E);        // deactivate scroll
     comm->sendCommand(0xAF);        // display on
-    show();
+    clearScreen();
     setFont(oled_font6x8);
 }
 
 void Oled::drawBitmap(byte x, byte page, byte widthPx, byte heightPx, const byte *bmp) {
-    int bmpI = 0;
-    for(int yp = page; yp < page + heightPx / 8; yp++) {
-        for (int xp = x; xp < x + widthPx; xp++) {
-            int bufI = yp * width() + xp;
-            buffer[bufI] = comm->pmgByte(bmp, bmpI);
-            bmpI += 1;
-        }
+    prepareScreenUpdate(x, x + widthPx - 1, page, page + heightPx / 8 - 1);
+    comm->beginTransmission();
+    int bytesInScreen = widthPx * heightPx / 8;
+    for(int i = 0; i < bytesInScreen; i++) {
+        comm->includeByte(hardware->pmgByte(bmp, i));
     }
+    comm->endTransmission();
 }
 
 void Oled::prepareFullScreenUpdate() const {
@@ -67,9 +65,13 @@ void Oled::prepareScreenUpdate(int startX, int endX, int startP, int endP) const
     comm->sendCommand(endP);    //  -> end at page endP
 }
 
-void Oled::setFont(const byte *font) {
-    this->font = font;
-    fontWidth = comm->pmgByte(font, 0);
+void Oled::clearScreen() {
+    clear(0, 0, 128, 8);
+}
+
+void Oled::setFont(const byte *newFont) {
+    this->font = newFont;
+    fontWidth = hardware->pmgByte(newFont, 0);
 }
 
 byte Oled::getFontWidth() const {
@@ -78,24 +80,48 @@ byte Oled::getFontWidth() const {
 
 void Oled::writeString(byte x, byte row, const char *msg) {
     byte len = strlen(msg);
+    prepareScreenUpdate(x, x + len * fontWidth - 1, row, row);
 
-    int bufI = row * width() + x;
+    comm->beginTransmission();
     for(byte i = 0; i < len; i++) {
         char c = msg[i];
         for( byte j = 0; j < fontWidth; j++) {
-            byte col = comm->pmgByte(font, (c - 32) * fontWidth + fontMetaOffset + j);
-            buffer[bufI] = textInverted ? ~col : col;
+            comm->includeByte(hardware->pmgByte(font, (c - 32) * fontWidth + fontMetaOffset + j));
+        }
+    }
+    comm->endTransmission();
+}
+
+void Oled::bufferString(byte x, const char *msg) {
+    byte len = strlen(msg);
+
+    int bufI = x;
+    for(byte i = 0; i < len; i++) {
+        char c = msg[i];
+        for( byte j = 0; j < fontWidth; j++) {
+            byte col = hardware->pmgByte(font, (c - 32) * fontWidth + fontMetaOffset + j);
+            rowBuffer->getBuffer()[bufI] = col;
             bufI += 1;
         }
     }
 }
 
-void Oled::setTextInverted(bool b) {
-    textInverted = b;
+void Oled::clear(byte x, byte row, byte widthPx, byte heightRows) {
+    int size = widthPx * heightRows;
+    prepareScreenUpdate(x, x + widthPx - 1, row, row + heightRows - 1);
+
+    comm->beginTransmission();
+    for(int i = 0; i < size; i++)
+        comm->includeByte(0x0);
+    comm->endTransmission();
 }
 
-bool Oled::isTextInverted() {
-    return textInverted;
+void Oled::setInverted(bool b) {
+    comm->setInverted(b);
+}
+
+bool Oled::isInverted() {
+    return comm->isInverted();
 }
 
 void Oled::drawCanvas(byte x, byte row, byte widthPx, byte heightPx, byte *bytes) {
@@ -108,18 +134,6 @@ void Oled::drawCanvas(byte x, byte row, byte widthPx, byte heightPx, byte *bytes
     comm->endTransmission();
 }
 
-void Oled::show() {
-    show(0, 0, width(), height());
-}
-
-void Oled::show(int x, int page, int widthPx, int heightPx) {
-    prepareScreenUpdate(x, x + widthPx - 1, page, page + heightPx / 8 - 1);
-    comm->beginTransmission();
-    for(int yp = page; yp < page + heightPx / 8; yp++) {
-        for (int xp = x; xp < x + widthPx; xp++) {
-            int bufI = yp * width() + xp;
-            comm->includeByte(buffer[bufI]);
-        }
-    }
-    comm->endTransmission();
+void Oled::drawBufferRow(byte row) {
+    drawCanvas(0, row, 128, 8, rowBuffer->getBuffer());
 }

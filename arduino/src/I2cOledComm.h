@@ -21,8 +21,6 @@ public:
 
     void endTransmission() override;
 
-    byte pmgByte(const byte *bmp, int i) override;
-
 private:
     byte packetSize;
 };

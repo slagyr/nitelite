@@ -21,6 +21,8 @@
 #define R_IN_PIN 14
 #define G_IN_PIN 15
 #define B_IN_PIN 16
+#define UP_PIN 4
+#define DOWN_PIN 7
 
 class Context {
 public:

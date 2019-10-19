@@ -40,10 +40,6 @@ public:
         inTransmission = false;
     }
 
-    byte pmgByte(const byte *bmp, int i) override {
-        return bmp[i];
-    }
-
     bool wasSetup;
     LinkedList<byte> *commands;
     LinkedList<byte> *transmission;

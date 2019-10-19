@@ -2,6 +2,7 @@
 #define HARDWARE_H
 
 #include "common.h"
+#include "config.h"
 
 class Hardware {
 
@@ -16,9 +17,10 @@ public:
     virtual void setPinLow(byte pin) = 0;
     virtual void analogWritePin(byte pin, int value) = 0;
     virtual void playNote(byte pin, unsigned int frequency, unsigned long duration) = 0;
-
+    virtual void saveConfig(Config *conf) = 0;
+    virtual void loadConfig(Config *conf) = 0;
+    virtual byte pmgByte(const byte *bmp, int i) = 0;
     virtual void sleep(unsigned long duration) = 0;
-
     virtual void print(const char *value) = 0;
     virtual void print(int value) = 0;
     virtual void print(float value) = 0;
@@ -26,6 +28,7 @@ public:
     void println(int value);
     void println(float value);
     void printValue(char* label, int value);
+
 };
 
 

@@ -10,7 +10,7 @@ public:
 
     static MockController *create() {
         Hardware *hardware = new MockHardware();
-        Oled *display = new Oled(new MockOledComm());
+        Oled *display = new Oled(hardware, new MockOledComm());
 
         MockController *controller = new MockController();
 
