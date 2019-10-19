@@ -18,6 +18,7 @@ public:
     bool fade(float rStep, float gStep, float bStep, byte rLimit, byte gLimit, byte bLimit);
 //    byte min();
 //    byte max();
+    byte minb(byte a, byte b);
 
 protected:
     explicit Mode(Controller *controller) {

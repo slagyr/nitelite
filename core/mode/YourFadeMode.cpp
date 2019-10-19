@@ -37,9 +37,9 @@ void YourFadeMode::tick() {
         rStep *= -1;
         gStep *= -1;
         bStep *= -1;
-        rLimit = 0;
-        gLimit = 0;
-        bLimit = 0;
+        rLimit = minb(10,rLimit);
+        gLimit = minb(10, gLimit);
+        bLimit = minb(10, bLimit);
     }
 
     bool done = fade(rStep, gStep, bStep, rLimit, gLimit, bLimit);

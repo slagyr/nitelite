@@ -44,6 +44,13 @@ bool Mode::fadeLimitHit(bool result, float color, float step, byte limit) const 
         result = true;
     return result;
 }
+
+byte Mode::minb(byte a, byte b) {
+    if(a < b)
+        return a;
+    else
+        return b;
+}
 //
 //byte Mode::min() {
 //    byte min = controller->red;
