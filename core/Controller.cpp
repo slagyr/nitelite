@@ -3,6 +3,7 @@
 #include <mode/YourColorMode.h>
 #include <mode/YourFadeMode.h>
 #include <mode/RGBFadeMode.h>
+#include <mode/YourBeatMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
@@ -17,7 +18,8 @@ Controller::Controller(Hardware *hardware) {
     modes = new Mode*[MODES];
     modes[0] = new YourColorMode(this);
     modes[1] = new YourFadeMode(this);
-    modes[2] = new RGBFadeMode(this);
+    modes[2] = new YourBeatMode(this);
+    modes[3] = new RGBFadeMode(this);
     modeIndex = 0;
 
     config = new Config();
@@ -185,5 +187,14 @@ byte Controller::getGreen() {
 
 byte Controller::getBlue() {
     return ftob(blue);
+}
+
+void Controller::printRGB() {
+    hardware->print("RGB: ");
+    hardware->print(red);
+    hardware->print(", ");
+    hardware->print(green);
+    hardware->print(", ");
+    hardware->println(blue);
 }
 

@@ -51,6 +51,13 @@ byte Mode::minb(byte a, byte b) {
     else
         return b;
 }
+
+byte Mode::maxb(byte a, byte b) {
+    if(a > b)
+        return a;
+    else
+        return b;
+}
 //
 //byte Mode::min() {
 //    byte min = controller->red;

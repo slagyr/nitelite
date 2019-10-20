@@ -10,7 +10,7 @@
 #include "LinkedList.h"
 #include "Button.h"
 
-#define MODES 3
+#define MODES 4
 
 class Controller {
 
@@ -71,6 +71,8 @@ public:
     float blue;
     short tempScreenTimeout;
     short modeIndex;
+
+    void printRGB();
 
 protected:
 

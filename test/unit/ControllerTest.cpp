@@ -47,8 +47,9 @@ TEST_F(ControllerTest, Buttons) {
 
 TEST_F(ControllerTest, Modes) {
     EXPECT_EQ("Your Color", controller->modes[0]->getName());
-    EXPECT_EQ("Your Color Fade", controller->modes[1]->getName());
-    EXPECT_EQ("RGB Fade", controller->modes[2]->getName());
+    EXPECT_EQ("Your Color Breathing", controller->modes[1]->getName());
+    EXPECT_EQ("Your Color Heartbeat", controller->modes[2]->getName());
+    EXPECT_EQ("RGB Fade", controller->modes[3]->getName());
 
     EXPECT_EQ("Your Color", controller->getMode()->getName());
     EXPECT_EQ(0, controller->modeIndex);
@@ -225,7 +226,7 @@ TEST_F(ControllerTest, DownPressed) {
     controller->tick(1);
 
     EXPECT_EQ(1, controller->modeIndex);
-    EXPECT_EQ("Your Color Fade", controller->getMode()->getName());
+    EXPECT_EQ("Your Color Breathing", controller->getMode()->getName());
 
     for (int i = 1; i < MODES; i++) {
         controller->downButton->force(true);
@@ -244,5 +245,5 @@ TEST_F(ControllerTest, UpPressed) {
     }
 
     EXPECT_EQ(1, controller->modeIndex);
-    EXPECT_EQ("Your Color Fade", controller->getMode()->getName());
+    EXPECT_EQ("Your Color Breathing", controller->getMode()->getName());
 }

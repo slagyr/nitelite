@@ -1,30 +1,32 @@
 #include <Controller.h>
 #include "YourFadeMode.h"
 
-#define STEPS 50;
+#define STEPS 50.0
 
 YourFadeMode::YourFadeMode(Controller *controller) : Mode(controller) {
 }
 
 const char *YourFadeMode::getName() {
-    return "Your Color Fade";
+    return "Your Color Breathing";
 }
 
 void YourFadeMode::enter() {
     up = true;
     step = STEPS;
     controller->setScreen(controller->rgbScreen);
+    controller->readRGB();
+    controller->writeRGBInputs();
 }
 
 void YourFadeMode::tick() {
     controller->readRGB();
 
     byte rLimit = controller->redInput;
-    float rStep = (float)rLimit / STEPS;
     byte gLimit = controller->greenInput;
-    float gStep = (float)gLimit / STEPS;
     byte bLimit = controller->blueInput;
-    float bStep = (float)bLimit / STEPS;
+    float rStep = rLimit < SOFT_LOW_LIMIT ? 0 : (rLimit - SOFT_LOW_LIMIT) / STEPS;
+    float gStep = gLimit < SOFT_LOW_LIMIT ? 0 : (gLimit - SOFT_LOW_LIMIT) / STEPS;
+    float bStep = bLimit < SOFT_LOW_LIMIT ? 0 : (bLimit - SOFT_LOW_LIMIT) / STEPS;
 
     if(controller->red > rLimit)
         controller->red = rLimit;
@@ -37,9 +39,9 @@ void YourFadeMode::tick() {
         rStep *= -1;
         gStep *= -1;
         bStep *= -1;
-        rLimit = minb(10,rLimit);
-        gLimit = minb(10, gLimit);
-        bLimit = minb(10, bLimit);
+        rLimit = minb(SOFT_LOW_LIMIT, rLimit);
+        gLimit = minb(SOFT_LOW_LIMIT, gLimit);
+        bLimit = minb(SOFT_LOW_LIMIT, bLimit);
     }
 
     bool done = fade(rStep, gStep, bStep, rLimit, gLimit, bLimit);

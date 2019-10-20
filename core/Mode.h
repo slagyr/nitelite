@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+#define SOFT_LOW_LIMIT 15
+
 class Controller;
 
 class Mode {
@@ -19,6 +21,7 @@ public:
 //    byte min();
 //    byte max();
     byte minb(byte a, byte b);
+    byte maxb(byte a, byte b);
 
 protected:
     explicit Mode(Controller *controller) {
