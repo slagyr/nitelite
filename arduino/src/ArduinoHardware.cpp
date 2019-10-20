@@ -55,11 +55,11 @@ void ArduinoHardware::print(const char *value) {
     Serial.print(value);
 }
 
-void ArduinoHardware::print(int value) {
+void ArduinoHardware::print(long value) {
     Serial.print(value);
 }
 
-void ArduinoHardware::print(float value) {
+void ArduinoHardware::print(double value) {
     Serial.print(value);
 
 }
@@ -74,5 +74,9 @@ void ArduinoHardware::loadConfig(Config *conf) {
 
 byte ArduinoHardware::pmgByte(const byte *bmp, int i) {
     return pgm_read_byte(bmp + i);
+}
+
+long ArduinoHardware::randomLong(long max) {
+    return random(max);
 }
 

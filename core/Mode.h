@@ -7,6 +7,12 @@
 
 class Controller;
 
+struct Color {
+    byte r;
+    byte g;
+    byte b;
+};
+
 class Mode {
 public:
     virtual ~Mode() = default;
@@ -18,6 +24,11 @@ public:
     virtual void tick() = 0;
 
     bool fade(float rStep, float gStep, float bStep, byte rLimit, byte gLimit, byte bLimit);
+
+    void randomColor(Color *c);
+    void randomBrightColor(Color *c);
+
+
 //    byte min();
 //    byte max();
     byte minb(byte a, byte b);

@@ -22,9 +22,9 @@ bool Mode::fade(float rStep, float gStep, float bStep, byte rLimit, byte gLimit,
 
 float Mode::stepColor(float value, float step, short limit) const {
     value += step;
-    if(step > 0 && value > limit)
+    if (step > 0 && value > limit)
         value = limit;
-    else if(step < 0 && value < limit)
+    else if (step < 0 && value < limit)
         value = limit;
 
     if (value > 255)
@@ -36,7 +36,7 @@ float Mode::stepColor(float value, float step, short limit) const {
 }
 
 bool Mode::fadeLimitHit(bool result, float color, float step, byte limit) const {
-    if(result)
+    if (result)
         return true;
     else if (step < 0 && color <= limit)
         result = true;
@@ -46,18 +46,60 @@ bool Mode::fadeLimitHit(bool result, float color, float step, byte limit) const 
 }
 
 byte Mode::minb(byte a, byte b) {
-    if(a < b)
+    if (a < b)
         return a;
     else
         return b;
 }
 
 byte Mode::maxb(byte a, byte b) {
-    if(a > b)
+    if (a > b)
         return a;
     else
         return b;
 }
+
+void Mode::randomColor(Color *c) {
+    c->r = controller->hardware->randomLong(256);
+    c->g = controller->hardware->randomLong(256);
+    c->b = controller->hardware->randomLong(256);
+}
+
+void Mode::randomBrightColor(Color *c) {
+    long choice = controller->hardware->randomLong(7);
+    c->r = 0;
+    c->g = 0;
+    c->b = 0;
+    switch (choice) {
+        case 0:
+            c->r = 255;
+            break;
+        case 1:
+            c->g = 255;
+            break;
+        case 2:
+            c->b = 255;
+            break;
+        case 3:
+            c->r = 255;
+            c->g = 255;
+            break;
+        case 4:
+            c->g = 255;
+            c->b = 255;
+            break;
+        case 5:
+            c->r = 255;
+            c->b = 255;
+            break;
+        case 6:
+            c->r = 255;
+            c->g = 255;
+            c->b = 255;
+            break;
+    }
+}
+
 //
 //byte Mode::min() {
 //    byte min = controller->red;

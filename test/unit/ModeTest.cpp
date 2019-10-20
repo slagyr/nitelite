@@ -183,5 +183,24 @@ TEST_F(ModeTest, FadeDownToLimitFractionally) {
     EXPECT_EQ(99, controller->blue);
 }
 
+//TEST_F(ModeTest, RandomColor) {
+//    Color c;
+//
+//    mode->randomColor(&c);
+//
+//    cout << (int)c.r << endl;
+//    cout << (int)c.g << endl;
+//    cout << (int)c.b << endl;
+//}
+//
+//TEST_F(ModeTest, RandomBrightColor) {
+//    Color c;
+//
+//    mode->randomBrightColor(&c);
+//
+//    cout << (int)c.r << endl;
+//    cout << (int)c.g << endl;
+//    cout << (int)c.b << endl;
+//}
 
 

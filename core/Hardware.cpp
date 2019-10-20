@@ -2,7 +2,7 @@
 
 void Hardware::printValue(char *label, int value) {
     print(label);
-    print(value);
+    print((long)value);
     print("\n");
 }
 
@@ -11,12 +11,12 @@ void Hardware::println(const char *value) {
     print("\n");
 }
 
-void Hardware::println(int value) {
+void Hardware::println(long value) {
     print(value);
     print("\n");
 }
 
-void Hardware::println(float value) {
+void Hardware::println(double value) {
     print(value);
     print("\n");
 }

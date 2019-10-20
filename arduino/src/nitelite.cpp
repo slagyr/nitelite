@@ -12,6 +12,7 @@ Controller *controller;
 void setup() {
     Serial.begin(9600);
     while (!Serial);
+    randomSeed(analogRead(0));
 
     pinMode(UP_PIN, INPUT_PULLUP);
     pinMode(DOWN_PIN, INPUT_PULLUP);

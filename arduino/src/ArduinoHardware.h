@@ -23,9 +23,9 @@ public:
 
     void print(const char *value) override;
 
-    void print(int value) override;
+    void print(long value) override;
 
-    void print(float value) override;
+    void print(double value) override;
 
     void playNote(byte pin, unsigned int frequency, unsigned long duration) override;
 
@@ -40,6 +40,8 @@ public:
     void loadConfig(Config *conf) override;
 
     byte pmgByte(const byte *bmp, int i) override;
+
+    long randomLong(long max) override;
 };
 
 

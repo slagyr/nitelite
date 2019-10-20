@@ -5,6 +5,7 @@
 #include <queue>
 #include <string>
 #include <iostream>
+#include <random>
 
 using namespace std;
 
@@ -79,9 +80,9 @@ public:
 
     void print(const char *value) override { cout << value; }
 
-    void print(int value) override { cout << value; }
+    void print(long value) override { cout << value; }
 
-    void print(float value) override { cout << value; }
+    void print(double value) override { cout << value; }
 
     void setPinHigh(byte pin) override { digitalWrites[pin] = "HIGH"; }
 
@@ -108,6 +109,13 @@ public:
 
     byte pmgByte(const byte *bmp, int i) override {
         return bmp[i];
+    }
+
+    long randomLong(long max) override {
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_real_distribution<double> dist(0.0, 1.0);
+        return (long)(dist(mt) * max);
     }
 };
 

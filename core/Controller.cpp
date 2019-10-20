@@ -4,6 +4,7 @@
 #include <mode/YourFadeMode.h>
 #include <mode/RGBFadeMode.h>
 #include <mode/YourBeatMode.h>
+#include <mode/FireworksMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
@@ -20,6 +21,7 @@ Controller::Controller(Hardware *hardware) {
     modes[1] = new YourFadeMode(this);
     modes[2] = new YourBeatMode(this);
     modes[3] = new RGBFadeMode(this);
+    modes[4] = new FireworksMode(this);
     modeIndex = 0;
 
     config = new Config();

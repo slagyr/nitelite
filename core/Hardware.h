@@ -19,14 +19,15 @@ public:
     virtual void playNote(byte pin, unsigned int frequency, unsigned long duration) = 0;
     virtual void saveConfig(Config *conf) = 0;
     virtual void loadConfig(Config *conf) = 0;
+    virtual long randomLong(long max) = 0;
     virtual byte pmgByte(const byte *bmp, int i) = 0;
     virtual void sleep(unsigned long duration) = 0;
     virtual void print(const char *value) = 0;
-    virtual void print(int value) = 0;
-    virtual void print(float value) = 0;
+    virtual void print(long value) = 0;
+    virtual void print(double value) = 0;
     void println(const char *value);
-    void println(int value);
-    void println(float value);
+    void println(long value);
+    void println(double value);
     void printValue(char* label, int value);
 
 };
