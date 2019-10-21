@@ -10,7 +10,7 @@
 #include "LinkedList.h"
 #include "Button.h"
 
-#define MODES 7
+#define MODES 8
 
 class Controller {
 
