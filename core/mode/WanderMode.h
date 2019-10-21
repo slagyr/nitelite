@@ -19,7 +19,6 @@ public:
 private:
 
     Color *dest;
-    byte step;
     float rStep;
     float gStep;
     float bStep;
