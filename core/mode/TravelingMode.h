@@ -16,9 +16,13 @@ public:
 
     void tick() override;
 
+protected:
+
+    virtual void nextColor();
+    Color *dest;
+
 private:
 
-    Color *dest;
     byte step;
     float rStep;
     float gStep;
@@ -26,8 +30,6 @@ private:
     bool traveling;
 
     void chooseDest();
-
-    void nextColor();
 };
 
 

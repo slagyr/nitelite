@@ -10,6 +10,7 @@
 #include <mode/WanderMode.h>
 #include <mode/July4thMode.h>
 #include <mode/TravelingMode.h>
+#include <mode/RWBMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
@@ -32,6 +33,7 @@ Controller::Controller(Hardware *hardware) {
     modes[7] = new RGBDiscoMode(this);
     modes[8] = new WanderMode(this);
     modes[9] = new TravelingMode(this);
+    modes[10] = new RWBMode(this);
     modeIndex = 0;
 
     config = new Config();

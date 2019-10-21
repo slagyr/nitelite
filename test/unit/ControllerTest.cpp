@@ -56,6 +56,7 @@ TEST_F(ControllerTest, Modes) {
     EXPECT_EQ("Multicolor Disco", controller->modes[7]->getName());
     EXPECT_EQ("Wandering Color", controller->modes[8]->getName());
     EXPECT_EQ("Traveling Color", controller->modes[9]->getName());
+    EXPECT_EQ("Star Spangled Banner", controller->modes[10]->getName());
 
     EXPECT_EQ("Your Color", controller->getMode()->getName());
     EXPECT_EQ(0, controller->modeIndex);
