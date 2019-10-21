@@ -52,8 +52,9 @@ TEST_F(ControllerTest, Modes) {
     EXPECT_EQ("Your Color Disco", controller->modes[3]->getName());
     EXPECT_EQ("RGB Fade", controller->modes[4]->getName());
     EXPECT_EQ("Fireworks", controller->modes[5]->getName());
-    EXPECT_EQ("Multicolor Disco", controller->modes[6]->getName());
-    EXPECT_EQ("Wandering Color", controller->modes[7]->getName());
+    EXPECT_EQ("4th of July", controller->modes[6]->getName());
+    EXPECT_EQ("Multicolor Disco", controller->modes[7]->getName());
+    EXPECT_EQ("Wandering Color", controller->modes[8]->getName());
 
     EXPECT_EQ("Your Color", controller->getMode()->getName());
     EXPECT_EQ(0, controller->modeIndex);

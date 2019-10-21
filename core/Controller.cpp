@@ -8,6 +8,7 @@
 #include <mode/YourDiscoMode.h>
 #include <mode/RGBDiscoMode.h>
 #include <mode/WanderMode.h>
+#include <mode/July4thMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
@@ -26,8 +27,9 @@ Controller::Controller(Hardware *hardware) {
     modes[3] = new YourDiscoMode(this);
     modes[4] = new RGBFadeMode(this);
     modes[5] = new FireworksMode(this);
-    modes[6] = new RGBDiscoMode(this);
-    modes[7] = new WanderMode(this);
+    modes[6] = new July4thMode(this);
+    modes[7] = new RGBDiscoMode(this);
+    modes[8] = new WanderMode(this);
     modeIndex = 0;
 
     config = new Config();

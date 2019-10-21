@@ -16,8 +16,10 @@ public:
 
     void tick() override;
 
-private:
+protected:
 
     Color *color;
+
+    virtual void chooseColor();
 };
 #endif //NITELITE_FIREWORKSMODE_H

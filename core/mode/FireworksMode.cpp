@@ -14,13 +14,15 @@ const char *FireworksMode::getName() {
 
 void FireworksMode::enter() {
     controller->setScreen(controller->rgbScreen);
-    randomBrightColor(color);
+    chooseColor();
     controller->writeRGB(color->r, color->g, color->b);
 }
 
+void FireworksMode::chooseColor() { randomBrightColor(color); }
+
 void FireworksMode::tick() {
     if(controller->hardware->randomLong(20) == 0) {
-        randomBrightColor(color);
+        chooseColor();
         if(color->r != 0)
             controller->red = color->r;
         if(color->g != 0)

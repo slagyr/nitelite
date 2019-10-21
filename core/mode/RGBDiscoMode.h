@@ -6,7 +6,7 @@
 
 class RGBDiscoMode : public YourDiscoMode {
 public:
-    RGBDiscoMode(Controller *controller);
+    explicit RGBDiscoMode(Controller *controller);
 
     const char *getName() override;
 
