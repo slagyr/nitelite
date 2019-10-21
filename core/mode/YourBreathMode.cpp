@@ -1,43 +1,32 @@
 #include <Controller.h>
-#include "YourBeatMode.h"
+#include "YourBreathMode.h"
 
-#define NOMINAL_STEPS 120.0;
-#define DOWN_GAIN 0.85
-#define UP_GAIN 3.0
-#define MIN_MULTIPLIER 0.5
+#define STEPS 50.0
 
-YourBeatMode::YourBeatMode(Controller *controller) : Mode(controller) {
+YourBreathMode::YourBreathMode(Controller *controller) : Mode(controller) {
 }
 
-const char *YourBeatMode::getName() {
-    return "Your Color Heartbeat";
+const char *YourBreathMode::getName() {
+    return "Your Color Breathing";
 }
 
-void YourBeatMode::enter() {
-    up = false;
-    multiplier = 20;
+void YourBreathMode::enter() {
+    up = true;
+    step = STEPS;
     controller->setScreen(controller->rgbScreen);
     controller->readRGB();
     controller->writeRGBInputs();
 }
 
-void YourBeatMode::tick() {
+void YourBreathMode::tick() {
     controller->readRGB();
 
     byte rLimit = controller->redInput;
     byte gLimit = controller->greenInput;
     byte bLimit = controller->blueInput;
-    float rStep = rLimit < SOFT_LOW_LIMIT ? 0 : (rLimit - SOFT_LOW_LIMIT) / NOMINAL_STEPS;
-    float gStep = gLimit < SOFT_LOW_LIMIT ? 0 : (gLimit - SOFT_LOW_LIMIT) / NOMINAL_STEPS;
-    float bStep = bLimit < SOFT_LOW_LIMIT ? 0 : (bLimit - SOFT_LOW_LIMIT) / NOMINAL_STEPS;
-    rStep *= multiplier;
-    gStep *= multiplier;
-    bStep *= multiplier;
-
-    multiplier *= up ? UP_GAIN : DOWN_GAIN;
-    if(multiplier < MIN_MULTIPLIER)
-        multiplier = MIN_MULTIPLIER;
-
+    float rStep = rLimit < SOFT_LOW_LIMIT ? 0 : (rLimit - SOFT_LOW_LIMIT) / STEPS;
+    float gStep = gLimit < SOFT_LOW_LIMIT ? 0 : (gLimit - SOFT_LOW_LIMIT) / STEPS;
+    float bStep = bLimit < SOFT_LOW_LIMIT ? 0 : (bLimit - SOFT_LOW_LIMIT) / STEPS;
 
     if(controller->red > rLimit)
         controller->red = rLimit;
@@ -59,7 +48,6 @@ void YourBeatMode::tick() {
 
     if(done) {
         up = !up;
-        multiplier = up ? MIN_MULTIPLIER : 20;
         controller->red = rLimit;
         controller->green = gLimit;
         controller->blue = bLimit;

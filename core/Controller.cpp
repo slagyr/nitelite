@@ -1,10 +1,12 @@
 #include <screen/SplashScreen.h>
 #include <screen/RGBScreen.h>
 #include <mode/YourColorMode.h>
-#include <mode/YourFadeMode.h>
+#include <mode/YourBreathMode.h>
 #include <mode/RGBFadeMode.h>
-#include <mode/YourBeatMode.h>
+#include <mode/YourHeartbeatMode.h>
 #include <mode/FireworksMode.h>
+#include <mode/YourDiscoMode.h>
+#include <mode/RGBDiscoMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
@@ -18,10 +20,12 @@ Controller::Controller(Hardware *hardware) {
 
     modes = new Mode*[MODES];
     modes[0] = new YourColorMode(this);
-    modes[1] = new YourFadeMode(this);
-    modes[2] = new YourBeatMode(this);
-    modes[3] = new RGBFadeMode(this);
-    modes[4] = new FireworksMode(this);
+    modes[1] = new YourBreathMode(this);
+    modes[2] = new YourHeartbeatMode(this);
+    modes[3] = new YourDiscoMode(this);
+    modes[4] = new RGBFadeMode(this);
+    modes[5] = new FireworksMode(this);
+    modes[6] = new RGBDiscoMode(this);
     modeIndex = 0;
 
     config = new Config();
