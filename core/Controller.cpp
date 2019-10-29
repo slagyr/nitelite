@@ -22,7 +22,7 @@ Controller::Controller(Hardware *hardware) {
     splashScreen = new SplashScreen(this);
     rgbScreen = new RGBScreen(this);
 
-    modes = new Mode*[MODES];
+    modes = new Mode *[MODES];
     modes[0] = new YourColorMode(this);
     modes[1] = new YourBreathMode(this);
     modes[2] = new YourHeartbeatMode(this);
@@ -59,28 +59,13 @@ void Controller::setup() {
     hardware->pinToOutput(B_OUT_PIN);
     hardware->pinToOutput(OLED_PIN);
 
-    loadConfig();
-
     setMode(modes[0]);
     setScreen(rgbScreen);
 }
 
-void Controller::loadConfig() const {
-    hardware->loadConfig(config);
-    if (config->version != CONFIG_VERSION) {
-        config->version = CONFIG_VERSION;
-        config->rMin = 0;
-        config->gMin = 0;
-        config->bMin = 0;
-        config->rMax = 1023;
-        config->gMax = 1023;
-        config->bMax = 1023;
-    }
-}
-
 void Controller::setScreen(Screen *screen) {
     this->screen = screen;
-    if(tempScreen == nullptr)
+    if (tempScreen == nullptr)
         screen->enter();
 }
 
@@ -89,7 +74,7 @@ Screen *Controller::getScreen() {
 }
 
 Screen *Controller::getActiveScreen() {
-    if(tempScreen != nullptr)
+    if (tempScreen != nullptr)
         return tempScreen;
     return screen;
 }
@@ -114,15 +99,15 @@ void Controller::tick(unsigned long millis) {
 
     upButton->tick();
     downButton->tick();
-    if(downButton->pressed()) {
+    if (downButton->pressed()) {
         modeIndex++;
-        if(modeIndex >= MODES)
+        if (modeIndex >= MODES)
             modeIndex = 0;
         setMode(modes[modeIndex]);
     }
-    if(upButton->pressed()) {
+    if (upButton->pressed()) {
         modeIndex--;
-        if(modeIndex < 0)
+        if (modeIndex < 0)
             modeIndex = MODES - 1;
         setMode(modes[modeIndex]);
     }
@@ -152,16 +137,22 @@ void Controller::readRGB() {
     int green = hardware->readAnalogPin(G_IN_PIN);
     int blue = hardware->readAnalogPin(B_IN_PIN);
 
-    redInput = analogToDigitalColor(red, config->rMin, config->rMax);
-    greenInput = analogToDigitalColor(green, config->gMin, config->gMax);
-    blueInput = analogToDigitalColor(blue, config->bMin, config->bMax);
+    redInput = 255 - analogToDigitalColor(red, config->rMin, config->rMax);
+    if (redInput <= 2)
+        redInput = 0;
+    greenInput = 255 - analogToDigitalColor(green, config->gMin, config->gMax);
+    if (greenInput <= 2)
+        greenInput = 0;
+    blueInput = 255 - analogToDigitalColor(blue, config->bMin, config->bMax);
+    if (blueInput <= 2)
+        blueInput = 0;
 }
 
 byte Controller::analogToDigitalColor(int a, short min, short max) const {
     double value = 1.0 * (a - min) / (max - min) * 255;
-    if(value > 255)
+    if (value > 255)
         value = 255;
-    if(value < 0)
+    if (value < 0)
         value = 0;
     return (byte) value;
 }
@@ -184,11 +175,11 @@ void Controller::writeRGBInputs() {
 }
 
 byte Controller::ftob(float color) const {
-    if(color < 0)
+    if (color < 0)
         return 0;
-    if(color > 254.5)
+    if (color > 254.5)
         return 255;
-    return (byte)(color + 0.5);
+    return (byte) (color + 0.5);
 }
 
 byte Controller::getRed() {
@@ -210,5 +201,14 @@ void Controller::printRGB() {
     hardware->print(green);
     hardware->print(", ");
     hardware->println(blue);
+}
+
+void Controller::configDefaults() {
+    config->rMin = 0;
+    config->rMax = 1023;
+    config->gMin = 0;
+    config->gMax = 1023;
+    config->bMin = 0;
+    config->bMax = 1023;
 }
 

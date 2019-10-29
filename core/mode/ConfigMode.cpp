@@ -13,6 +13,7 @@ void ConfigMode::enter() {
     controller->setScreen(configScreen);
 
     Config *config = controller->config;
+    config->version = CONFIG_VERSION;
     config->rMin = 1023;
     config->gMin = 1023;
     config->bMin = 1023;

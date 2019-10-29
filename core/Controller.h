@@ -34,6 +34,8 @@ public:
 
     Mode *getMode();
 
+    void configDefaults();
+
     void displayOn();
 
     void displayOff();
@@ -83,8 +85,6 @@ protected:
 private:
 
     unsigned long lastUserEventTime;
-
-    void loadConfig() const;
 
     byte analogToDigitalColor(int a, short min, short max) const;
 

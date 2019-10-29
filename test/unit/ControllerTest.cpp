@@ -75,18 +75,6 @@ TEST_F(ControllerTest, Setup) {
     EXPECT_EQ(false, oledComm->wasSetup);
 }
 
-TEST_F(ControllerTest, SetupDefaultConfig) {
-    controller->setup();
-
-    EXPECT_EQ(1, controller->config->version);
-    EXPECT_EQ(0, controller->config->rMin);
-    EXPECT_EQ(0, controller->config->gMin);
-    EXPECT_EQ(0, controller->config->bMin);
-    EXPECT_EQ(1023, controller->config->rMax);
-    EXPECT_EQ(1023, controller->config->gMax);
-    EXPECT_EQ(1023, controller->config->bMax);
-}
-
 TEST_F(ControllerTest, SetupSavedConfig) {
     Config conf;
     conf.version = CONFIG_VERSION;
@@ -98,7 +86,7 @@ TEST_F(ControllerTest, SetupSavedConfig) {
     conf.bMax = 999;
     hardware->saveConfig(&conf);
 
-    controller->setup();
+    hardware->loadConfig(controller->config);
 
     EXPECT_EQ(1, controller->config->version);
     EXPECT_EQ(1, controller->config->rMin);
@@ -164,15 +152,16 @@ TEST_F(ControllerTest, DisplayOff) {
 }
 
 TEST_F(ControllerTest, ReadRGB) {
+    controller->configDefaults();
     hardware->analogReads[R_IN_PIN].push(001);
     hardware->analogReads[G_IN_PIN].push(512);
     hardware->analogReads[B_IN_PIN].push(1023);
 
     controller->readRGB();
 
-    EXPECT_EQ(0, controller->redInput);
-    EXPECT_EQ(127, controller->greenInput);
-    EXPECT_EQ(255, controller->blueInput);
+    EXPECT_EQ(255, controller->redInput);
+    EXPECT_EQ(128, controller->greenInput);
+    EXPECT_EQ(0, controller->blueInput);
 }
 
 TEST_F(ControllerTest, ReadRGBAlteredConfig) {
@@ -188,9 +177,9 @@ TEST_F(ControllerTest, ReadRGBAlteredConfig) {
 
     controller->readRGB();
 
-    EXPECT_EQ(127, controller->redInput);
-    EXPECT_EQ(72, controller->greenInput);
-    EXPECT_EQ(74, controller->blueInput);
+    EXPECT_EQ(128, controller->redInput);
+    EXPECT_EQ(183, controller->greenInput);
+    EXPECT_EQ(181, controller->blueInput);
 }
 
 TEST_F(ControllerTest, ReadRGBDoesntExceedLimits) {
@@ -206,9 +195,9 @@ TEST_F(ControllerTest, ReadRGBDoesntExceedLimits) {
 
     controller->readRGB();
 
-    EXPECT_EQ(255, controller->redInput);
-    EXPECT_EQ(0, controller->greenInput);
-    EXPECT_EQ(255, controller->blueInput);
+    EXPECT_EQ(0, controller->redInput);
+    EXPECT_EQ(255, controller->greenInput);
+    EXPECT_EQ(0, controller->blueInput);
 }
 
 TEST_F(ControllerTest, WriteRGB) {

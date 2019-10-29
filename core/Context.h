@@ -18,9 +18,9 @@
 #define R_OUT_PIN 3
 #define G_OUT_PIN 5
 #define B_OUT_PIN 6
-#define R_IN_PIN 14
+#define R_IN_PIN 16
 #define G_IN_PIN 15
-#define B_IN_PIN 16
+#define B_IN_PIN 14
 #define UP_PIN 4
 #define DOWN_PIN 7
 
