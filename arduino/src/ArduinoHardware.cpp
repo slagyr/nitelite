@@ -61,7 +61,6 @@ void ArduinoHardware::print(long value) {
 
 void ArduinoHardware::print(double value) {
     Serial.print(value);
-
 }
 
 void ArduinoHardware::saveConfig(Config *conf) {

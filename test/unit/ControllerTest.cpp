@@ -243,3 +243,12 @@ TEST_F(ControllerTest, UpPressed) {
     EXPECT_EQ(1, controller->modeIndex);
     EXPECT_EQ("Your Color Breathing", controller->getMode()->getName());
 }
+
+TEST_F(ControllerTest, UpPressedWithSplashGopesToConfig) {
+    controller->setTempScreen(controller->splashScreen, 1000);
+
+    controller->upButton->force(true);
+    controller->tick(123);
+
+    EXPECT_EQ("Config", controller->getMode()->getName());
+}

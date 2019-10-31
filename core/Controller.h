@@ -58,6 +58,7 @@ public:
     Screen *rgbScreen;
 
     Mode **modes;
+    Mode *configMode;
 
     Hardware *hardware;
     Oled *display;
@@ -89,6 +90,7 @@ private:
     byte analogToDigitalColor(int a, short min, short max) const;
 
     byte ftob(float red) const;
+
 };
 
 

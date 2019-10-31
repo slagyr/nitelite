@@ -11,6 +11,7 @@
 #include <mode/July4thMode.h>
 #include <mode/TravelingMode.h>
 #include <mode/RWBMode.h>
+#include <mode/ConfigMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
@@ -22,6 +23,7 @@ Controller::Controller(Hardware *hardware) {
     splashScreen = new SplashScreen(this);
     rgbScreen = new RGBScreen(this);
 
+    configMode = new ConfigMode(this);
     modes = new Mode *[MODES];
     modes[0] = new YourColorMode(this);
     modes[1] = new YourBreathMode(this);
@@ -90,6 +92,7 @@ Mode *Controller::getMode() {
 }
 
 void Controller::setMode(Mode *m) {
+    hardware->println(m->getName());
     mode = m;
     mode->enter();
 }
@@ -106,10 +109,14 @@ void Controller::tick(unsigned long millis) {
         setMode(modes[modeIndex]);
     }
     if (upButton->pressed()) {
-        modeIndex--;
-        if (modeIndex < 0)
-            modeIndex = MODES - 1;
-        setMode(modes[modeIndex]);
+        if (tempScreen == splashScreen)
+            setMode(configMode);
+        else {
+            modeIndex--;
+            if (modeIndex < 0)
+                modeIndex = MODES - 1;
+            setMode(modes[modeIndex]);
+        }
     }
 
     mode->tick();
