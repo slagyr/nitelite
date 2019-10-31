@@ -26,22 +26,6 @@ void setup() {
     controller->setTempScreen(controller->splashScreen, 3000);
 
     hardware->loadConfig(controller->config);
-    Serial.print("controller->config->version: ");
-    Serial.println(controller->config->version);
-    Serial.print("controller->config->rMin: ");
-    Serial.println(controller->config->rMin);
-    Serial.print("controller->config->rMax: ");
-    Serial.println(controller->config->rMax);
-    Serial.print("controller->config->gMin: ");
-    Serial.println(controller->config->gMin);
-    Serial.print("controller->config->gMax: ");
-    Serial.println(controller->config->gMax);
-    Serial.print("controller->config->bMin: ");
-    Serial.println(controller->config->bMin);
-    Serial.print("controller->config->bMax: ");
-    Serial.println(controller->config->bMax);
-    Serial.print("CONFIG_VERSION: ");
-    Serial.println(CONFIG_VERSION);
 
     Serial.print("availableMemory(): ");
     Serial.println(availableMemory());

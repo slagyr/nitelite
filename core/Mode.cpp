@@ -59,6 +59,20 @@ byte Mode::maxb(byte a, byte b) {
         return b;
 }
 
+float Mode::minf(float a, float b) {
+    if(a < b)
+        return a;
+    else
+        return b;
+}
+
+float Mode::maxf(float a, float b) {
+    if(a > b)
+        return a;
+    else
+        return b;
+}
+
 void Mode::randomColor(Color *c) {
     c->r = controller->hardware->randomLong(256);
     c->g = controller->hardware->randomLong(256);

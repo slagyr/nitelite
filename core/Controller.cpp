@@ -12,6 +12,7 @@
 #include <mode/TravelingMode.h>
 #include <mode/RWBMode.h>
 #include <mode/ConfigMode.h>
+#include <mode/HalloweenMode.h>
 #include "Controller.h"
 #include "Context.h"
 #include "math.h"
@@ -36,6 +37,7 @@ Controller::Controller(Hardware *hardware) {
     modes[8] = new WanderMode(this);
     modes[9] = new TravelingMode(this);
     modes[10] = new RWBMode(this);
+    modes[11] = new HalloweenMode(this);
     modeIndex = 0;
 
     config = new Config();
@@ -92,7 +94,6 @@ Mode *Controller::getMode() {
 }
 
 void Controller::setMode(Mode *m) {
-    hardware->println(m->getName());
     mode = m;
     mode->enter();
 }

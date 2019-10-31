@@ -33,6 +33,8 @@ public:
 //    byte max();
     byte minb(byte a, byte b);
     byte maxb(byte a, byte b);
+    float minf(float a, float b);
+    float maxf(float a, float b);
 
 protected:
     explicit Mode(Controller *controller) {
