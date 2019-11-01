@@ -58,6 +58,7 @@ TEST_F(ControllerTest, Modes) {
     EXPECT_EQ("Traveling Color", controller->modes[9]->getName());
     EXPECT_EQ("Star Spangled Banner", controller->modes[10]->getName());
     EXPECT_EQ("Halloween", controller->modes[11]->getName());
+    EXPECT_EQ("Christmas", controller->modes[12]->getName());
 
     EXPECT_EQ("Your Color", controller->getMode()->getName());
     EXPECT_EQ(0, controller->modeIndex);
