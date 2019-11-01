@@ -2,6 +2,9 @@
 #include "Arduino.h"
 #include <EEPROM.h>
 
+
+#define MODE_ADDRESS 42
+
 void ArduinoHardware::pinToInput(byte pin) {
     pinMode(pin, INPUT);
 }
@@ -69,6 +72,15 @@ void ArduinoHardware::saveConfig(Config *conf) {
 
 void ArduinoHardware::loadConfig(Config *conf) {
     EEPROM.get(CONFIG_ADDRESS, *conf);
+}
+
+void ArduinoHardware::saveMode(byte mode) {
+    EEPROM.put(MODE_ADDRESS, mode);
+}
+
+byte ArduinoHardware::loadMode() {
+    byte mode;
+    return EEPROM.get(MODE_ADDRESS, mode);
 }
 
 byte ArduinoHardware::pmgByte(const byte *bmp, int i) {

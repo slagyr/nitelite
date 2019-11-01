@@ -19,6 +19,8 @@ public:
     virtual void playNote(byte pin, unsigned int frequency, unsigned long duration) = 0;
     virtual void saveConfig(Config *conf) = 0;
     virtual void loadConfig(Config *conf) = 0;
+    virtual void saveMode(byte mode) = 0;
+    virtual byte loadMode() = 0;
     virtual long randomLong(long max) = 0;
     virtual byte pmgByte(const byte *bmp, int i) = 0;
     virtual void sleep(unsigned long duration) = 0;

@@ -65,7 +65,7 @@ void Controller::setup() {
     hardware->pinToOutput(B_OUT_PIN);
     hardware->pinToOutput(OLED_PIN);
 
-    setMode(modes[0]);
+    setModeIndex(hardware->loadMode());
     setScreen(rgbScreen);
 }
 
@@ -105,21 +105,13 @@ void Controller::tick(unsigned long millis) {
 
     upButton->tick();
     downButton->tick();
-    if (downButton->pressed()) {
-        modeIndex++;
-        if (modeIndex >= MODES)
-            modeIndex = 0;
-        setMode(modes[modeIndex]);
-    }
+    if (downButton->pressed())
+        setModeIndex(++modeIndex);
     if (upButton->pressed()) {
         if (tempScreen == splashScreen)
             setMode(configMode);
-        else {
-            modeIndex--;
-            if (modeIndex < 0)
-                modeIndex = MODES - 1;
-            setMode(modes[modeIndex]);
-        }
+        else
+            setModeIndex(--modeIndex);
     }
 
     mode->tick();
@@ -129,6 +121,16 @@ void Controller::tick(unsigned long millis) {
         screen->enter();
         lastUserEventTime = millis;
     }
+}
+
+void Controller::setModeIndex(short mode) {
+    modeIndex = mode;
+    if (modeIndex >= MODES)
+        modeIndex = 0;
+    if (modeIndex < 0)
+        modeIndex = MODES - 1;
+    hardware->saveMode(modeIndex);
+    setMode(modes[modeIndex]);
 }
 
 void Controller::displayOn() {

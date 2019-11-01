@@ -99,6 +99,23 @@ TEST_F(ControllerTest, SetupSavedConfig) {
     EXPECT_EQ(999, controller->config->bMax);
 }
 
+TEST_F(ControllerTest, SavingMode) {
+    hardware->saveMode(10);
+
+    controller->setModeIndex(5);
+
+    EXPECT_EQ(5, hardware->loadMode());
+}
+
+TEST_F(ControllerTest, LoadingMode) {
+    hardware->saveMode(10);
+
+    controller->setup();
+
+    EXPECT_EQ(10, controller->modeIndex);
+    EXPECT_EQ(controller->modes[10], controller->getMode());
+}
+
 TEST_F(ControllerTest, TempScreenTimeout) {
     controller->setTempScreen(screen, 123);
 

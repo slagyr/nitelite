@@ -36,6 +36,7 @@ public:
     vector<PlayedNote *> notesPlayed;
     vector<unsigned long> delays;
     Config *config;
+    byte mode;
 
     MockHardware() {
         config = new Config();
@@ -105,6 +106,14 @@ public:
     void loadConfig(Config *conf) override {
         if(config != nullptr)
             memcpy(conf, config, sizeof(Config));
+    }
+
+    void saveMode(byte m) override {
+        mode = m;
+    }
+
+    byte loadMode() override {
+        return mode;
     }
 
     byte pmgByte(const byte *bmp, int i) override {

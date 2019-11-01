@@ -4,6 +4,7 @@
 
 #include <Hardware.h>
 
+
 class ArduinoHardware : public Hardware {
 
 public:
@@ -42,6 +43,10 @@ public:
     byte pmgByte(const byte *bmp, int i) override;
 
     long randomLong(long max) override;
+
+    void saveMode(byte mode) override;
+
+    byte loadMode() override;
 };
 
 
