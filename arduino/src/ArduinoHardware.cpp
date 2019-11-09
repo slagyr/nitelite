@@ -4,6 +4,7 @@
 
 
 #define MODE_ADDRESS 42
+#define CALIBRATION_ADDRESS 100
 
 void ArduinoHardware::pinToInput(byte pin) {
     pinMode(pin, INPUT);
@@ -66,12 +67,12 @@ void ArduinoHardware::print(double value) {
     Serial.print(value);
 }
 
-void ArduinoHardware::saveConfig(Config *conf) {
-    EEPROM.put(CONFIG_ADDRESS, *conf);
+void ArduinoHardware::saveCalibration(Config *conf) {
+    EEPROM.put(CALIBRATION_ADDRESS, *conf);
 }
 
-void ArduinoHardware::loadConfig(Config *conf) {
-    EEPROM.get(CONFIG_ADDRESS, *conf);
+void ArduinoHardware::loadCalibration(Config *conf) {
+    EEPROM.get(CALIBRATION_ADDRESS, *conf);
 }
 
 void ArduinoHardware::saveMode(byte mode) {

@@ -36,9 +36,9 @@ public:
 
     void analogWritePin(byte pin, int value) override;
 
-    void saveConfig(Config *conf) override;
+    void saveCalibration(Config *conf) override;
 
-    void loadConfig(Config *conf) override;
+    void loadCalibration(Config *conf) override;
 
     byte pmgByte(const byte *bmp, int i) override;
 

@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "mode/ConfigMode.h"
+#include "mode/CalibrateMode.h"
 #include "MockController.h"
 
 class ConfigModeTest : public ::testing::Test {
@@ -12,7 +12,7 @@ protected:
     virtual void SetUp() {
         controller = MockController::create();
         hardware = (MockHardware*)controller->hardware;
-        mode = new ConfigMode(controller);
+        mode = new CalibrateMode(controller);
     }
 
     virtual void TearDown() {
@@ -22,13 +22,13 @@ protected:
 };
 
 TEST_F(ConfigModeTest, Name) {
-    EXPECT_EQ("Config", mode->getName());
+    EXPECT_EQ("Calibration", mode->getName());
 }
 
 TEST_F(ConfigModeTest, Enter) {
     mode->enter();
 
-    EXPECT_EQ("Config", controller->getScreen()->getName());
+    EXPECT_EQ("Calibration", controller->getScreen()->getName());
 }
 
 TEST_F(ConfigModeTest, SavesMinMaxToConfig) {

@@ -86,9 +86,9 @@ TEST_F(ControllerTest, SetupSavedConfig) {
     conf.rMax = 997;
     conf.gMax = 998;
     conf.bMax = 999;
-    hardware->saveConfig(&conf);
+    hardware->saveCalibration(&conf);
 
-    hardware->loadConfig(controller->config);
+    hardware->loadCalibration(controller->config);
 
     EXPECT_EQ(1, controller->config->version);
     EXPECT_EQ(1, controller->config->rMin);
@@ -269,5 +269,5 @@ TEST_F(ControllerTest, UpPressedWithSplashGopesToConfig) {
     controller->upButton->force(true);
     controller->tick(123);
 
-    EXPECT_EQ("Config", controller->getMode()->getName());
+    EXPECT_EQ("Calibration", controller->getMode()->getName());
 }

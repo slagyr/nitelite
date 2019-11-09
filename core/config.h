@@ -4,7 +4,6 @@
 #include "common.h"
 
 #define CONFIG_VERSION 1
-#define CONFIG_ADDRESS 100
 
 struct Config {
     byte version;

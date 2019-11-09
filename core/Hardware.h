@@ -17,8 +17,8 @@ public:
     virtual void setPinLow(byte pin) = 0;
     virtual void analogWritePin(byte pin, int value) = 0;
     virtual void playNote(byte pin, unsigned int frequency, unsigned long duration) = 0;
-    virtual void saveConfig(Config *conf) = 0;
-    virtual void loadConfig(Config *conf) = 0;
+    virtual void saveCalibration(Config *conf) = 0;
+    virtual void loadCalibration(Config *conf) = 0;
     virtual void saveMode(byte mode) = 0;
     virtual byte loadMode() = 0;
     virtual long randomLong(long max) = 0;

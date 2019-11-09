@@ -1,15 +1,15 @@
 #include <Controller.h>
-#include <screen/ConfigScreen.h>
-#include "ConfigMode.h"
+#include <screen/CalibrateScreen.h>
+#include "CalibrateMode.h"
 
-ConfigMode::ConfigMode(Controller *controller) : Mode(controller) {}
+CalibrateMode::CalibrateMode(Controller *controller) : Mode(controller) {}
 
-const char *ConfigMode::getName() {
-    return "Config";
+const char *CalibrateMode::getName() {
+    return "Calibration";
 }
 
-void ConfigMode::enter() {
-    Screen *configScreen = new ConfigScreen(controller);
+void CalibrateMode::enter() {
+    Screen *configScreen = new CalibrateScreen(controller);
     controller->setScreen(configScreen);
 
     Config *config = controller->config;
@@ -22,7 +22,7 @@ void ConfigMode::enter() {
     config->bMax = 0;
 }
 
-void ConfigMode::tick() {
+void CalibrateMode::tick() {
     Config *config = controller->config;
 
     short r = controller->hardware->readAnalogPin(R_IN_PIN);
@@ -43,5 +43,5 @@ void ConfigMode::tick() {
     if(b > config->bMax)
         config->bMax = b;
 
-    controller->hardware->saveConfig(config);
+    controller->hardware->saveCalibration(config);
 }

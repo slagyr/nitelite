@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "screen/ConfigScreen.h"
+#include "screen/CalibrateScreen.h"
 #include "MockController.h"
 #include "testutil.h"
 
@@ -11,7 +11,7 @@ protected:
 
     virtual void SetUp() {
         controller = MockController::create();
-        screen = new ConfigScreen(controller);
+        screen = new CalibrateScreen(controller);
     }
 
     virtual void TearDown() {
@@ -21,7 +21,7 @@ protected:
 };
 
 TEST_F(ConfigScreenTest, Hardcoding) {
-    EXPECT_EQ("Config", screen->getName());
+    EXPECT_EQ("Calibration", screen->getName());
 }
 
 //TEST_F(ConfigScreenTest, Preview) {

@@ -2,7 +2,7 @@
 #include <avr/pgmspace.h>
 #include "common.h"
 #include <Controller.h>
-#include <mode/ConfigMode.h>
+#include <mode/CalibrateMode.h>
 #include "ArduinoHardware.h"
 #include "I2cOledComm.h"
 #include "Button.h"
@@ -25,7 +25,7 @@ void setup() {
     controller->displayOn();
     controller->setTempScreen(controller->splashScreen, 3000);
 
-    hardware->loadConfig(controller->config);
+    hardware->loadCalibration(controller->config);
 
     Serial.print("availableMemory(): ");
     Serial.println(availableMemory());

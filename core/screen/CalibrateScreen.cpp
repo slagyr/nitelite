@@ -1,16 +1,16 @@
 #include <oled/OledFonts.h>
-#include "ConfigScreen.h"
+#include "CalibrateScreen.h"
 #include "Controller.h"
 #include "common.h"
 #include "string.h"
 
-ConfigScreen::ConfigScreen(Controller *controller) : Screen(controller) {}
+CalibrateScreen::CalibrateScreen(Controller *controller) : Screen(controller) {}
 
-const char *ConfigScreen::getName() {
-    return "Config";
+const char *CalibrateScreen::getName() {
+    return "Calibration";
 }
 
-void ConfigScreen::enter() {
+void CalibrateScreen::enter() {
     Oled *display = controller->display;
     display->clearScreen();
 
@@ -24,7 +24,7 @@ void ConfigScreen::enter() {
     update();
 }
 
-void ConfigScreen::update() {
+void CalibrateScreen::update() {
     Oled *display = controller->display;
     Canvas *rowBuffer = display->rowBuffer;
 

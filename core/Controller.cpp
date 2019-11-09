@@ -11,7 +11,7 @@
 #include <mode/July4thMode.h>
 #include <mode/TravelingMode.h>
 #include <mode/RWBMode.h>
-#include <mode/ConfigMode.h>
+#include <mode/CalibrateMode.h>
 #include <mode/HalloweenMode.h>
 #include <mode/ChristmasMode.h>
 #include "Controller.h"
@@ -25,7 +25,7 @@ Controller::Controller(Hardware *hardware) {
     splashScreen = new SplashScreen(this);
     rgbScreen = new RGBScreen(this);
 
-    configMode = new ConfigMode(this);
+    configMode = new CalibrateMode(this);
     modes = new Mode *[MODES];
     modes[0] = new YourColorMode(this);
     modes[1] = new YourBreathMode(this);
