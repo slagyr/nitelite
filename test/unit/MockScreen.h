@@ -6,7 +6,7 @@
 class MockScreen : public Screen {
 public:
     MockScreen(Controller *controller) : MockScreen(controller, "Mock Screen") {}
-    MockScreen(Controller *controller, const char* name) : Screen(controller) {
+    MockScreen(Controller *controller, const char* name) : Screen() {
         this->name = name;
     }
 

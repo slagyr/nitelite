@@ -8,7 +8,7 @@ class FireworksMode : public Mode {
 
 public:
 
-    FireworksMode(Controller *controller);
+    FireworksMode();
 
     const char *getName() override;
 

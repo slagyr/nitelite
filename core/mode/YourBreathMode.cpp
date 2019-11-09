@@ -3,7 +3,7 @@
 
 #define STEPS 50.0
 
-YourBreathMode::YourBreathMode(Controller *controller) : Mode(controller) {
+YourBreathMode::YourBreathMode() : Mode() {
 }
 
 const char *YourBreathMode::getName() {
@@ -13,27 +13,27 @@ const char *YourBreathMode::getName() {
 void YourBreathMode::enter() {
     up = true;
     step = STEPS;
-    controller->setScreen(controller->rgbScreen);
-    controller->readRGB();
-    controller->writeRGBInputs();
+    Controller::instance->setScreen(Controller::instance->rgbScreen);
+    Controller::instance->readRGB();
+    Controller::instance->writeRGBInputs();
 }
 
 void YourBreathMode::tick() {
-    controller->readRGB();
+    Controller::instance->readRGB();
 
-    byte rLimit = controller->redInput;
-    byte gLimit = controller->greenInput;
-    byte bLimit = controller->blueInput;
+    byte rLimit = Controller::instance->redInput;
+    byte gLimit = Controller::instance->greenInput;
+    byte bLimit = Controller::instance->blueInput;
     float rStep = rLimit < SOFT_LOW_LIMIT ? 0 : (rLimit - SOFT_LOW_LIMIT) / STEPS;
     float gStep = gLimit < SOFT_LOW_LIMIT ? 0 : (gLimit - SOFT_LOW_LIMIT) / STEPS;
     float bStep = bLimit < SOFT_LOW_LIMIT ? 0 : (bLimit - SOFT_LOW_LIMIT) / STEPS;
 
-    if(controller->red > rLimit)
-        controller->red = rLimit;
-    if(controller->green > gLimit)
-        controller->green = gLimit;
-    if(controller->blue > bLimit)
-        controller->blue = bLimit;
+    if(Controller::instance->red > rLimit)
+        Controller::instance->red = rLimit;
+    if(Controller::instance->green > gLimit)
+        Controller::instance->green = gLimit;
+    if(Controller::instance->blue > bLimit)
+        Controller::instance->blue = bLimit;
 
     if(!up) {
         rStep *= -1;
@@ -48,10 +48,10 @@ void YourBreathMode::tick() {
 
     if(done) {
         up = !up;
-        controller->red = rLimit;
-        controller->green = gLimit;
-        controller->blue = bLimit;
+        Controller::instance->red = rLimit;
+        Controller::instance->green = gLimit;
+        Controller::instance->blue = bLimit;
     }
 
-    controller->writeRGB();
+    Controller::instance->writeRGB();
 }

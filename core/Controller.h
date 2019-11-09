@@ -4,8 +4,7 @@
 #include "Hardware.h"
 #include "oled/Oled.h"
 #include "Screen.h"
-#include "Switch.h"
-#include "Context.h"
+#include "core.h"
 #include "Mode.h"
 #include "LinkedList.h"
 #include "Button.h"
@@ -28,11 +27,7 @@ public:
 
     void setMode(Mode *m);
 
-    Screen *getScreen();
-
     Screen *getActiveScreen();
-
-    Mode *getMode();
 
     void configDefaults();
 
@@ -48,15 +43,29 @@ public:
 
     void writeRGBInputs();
 
-    byte getRed();
+    void setModeIndex(short mode);
 
-    byte getGreen();
+    void expireTempScreen();
 
-    byte getBlue();
+    byte screenTimeout();
+    byte lightsTimeout();
 
+//    byte getRed();
+//
+//    byte getGreen();
+//
+//    byte getBlue();
+//
+//    void printRGB();
+
+    static Controller *instance;
+
+    Screen *screen;
     Screen *splashScreen;
     Screen *rgbScreen;
+    Screen *tempScreen;
 
+    Mode *mode;
     Mode **modes;
     Mode *calibrateMode;
     Mode *settingsMode;
@@ -78,21 +87,6 @@ public:
     short modeIndex;
     unsigned long lastUserEventTime;
     bool isDisplayOn;
-
-    void printRGB();
-
-    void setModeIndex(short mode);
-
-    void expireTempScreen();
-
-    byte screenTimeout();
-    byte lightsTimeout();
-
-protected:
-
-    Screen *screen;
-    Screen *tempScreen;
-    Mode *mode;
 
 private:
 

@@ -1,13 +1,11 @@
 #include <Arduino.h>
 #include <avr/pgmspace.h>
-#include "common.h"
+#include "core.h"
 #include <Controller.h>
 #include <mode/CalibrateMode.h>
 #include "ArduinoHardware.h"
 #include "I2cOledComm.h"
 #include "Button.h"
-
-Controller *controller;
 
 void setup() {
     Serial.begin(9600);
@@ -18,7 +16,8 @@ void setup() {
     pinMode(DOWN_PIN, INPUT_PULLUP);
 
     Hardware *hardware = new ArduinoHardware();
-    controller = new Controller(hardware);
+    Controller *controller = new Controller(hardware);
+    Controller::instance = controller;
     I2cOledComm *oledComm = new I2cOledComm();
     controller->display = new Oled(controller->hardware, oledComm);
     controller->setup();
@@ -32,7 +31,7 @@ void setup() {
 }
 
 void loop() {
-    controller->tick(millis());
+    Controller::instance->tick(millis());
 }
 
 //

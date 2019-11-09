@@ -2,24 +2,25 @@
 #include <screen/SettingsScreen.h>
 #include "SettingsMode.h"
 
-SettingsMode::SettingsMode(Controller *controller) : Mode(controller) {}
+SettingsMode::SettingsMode() : Mode() {
+    settingsScreen = new SettingsScreen();
+}
 
 const char *SettingsMode::getName() {
     return "Settings";
 }
 
 void SettingsMode::enter() {
-    Screen *configScreen = new SettingsScreen(controller);
-    controller->setScreen(configScreen);
+    Controller::instance->setScreen(settingsScreen);
 }
 
 void SettingsMode::tick() {
-    Config *config = controller->config;
+    Config *config = Controller::instance->config;
 
-    controller->readRGB();
+    Controller::instance->readRGB();
 
-    config->screenTimeout = controller->redInput;
-    config->lightsTimeout = controller->greenInput;
+    config->screenTimeout = Controller::instance->redInput;
+    config->lightsTimeout = Controller::instance->greenInput;
 
-    controller->hardware->saveConfig(config);
+    Controller::instance->hardware->saveConfig(config);
 }

@@ -1,17 +1,17 @@
 #include <oled/OledFonts.h>
 #include "SettingsScreen.h"
 #include "Controller.h"
-#include "common.h"
+#include "core.h"
 #include "string.h"
 
-SettingsScreen::SettingsScreen(Controller *controller) : Screen(controller) {}
+SettingsScreen::SettingsScreen() : Screen() {}
 
 const char *SettingsScreen::getName() {
     return "Settings";
 }
 
 void SettingsScreen::enter() {
-    Oled *display = controller->display;
+    Oled *display = Controller::instance->display;
     display->clearScreen();
 
     display->rowBuffer->clear();
@@ -25,22 +25,22 @@ void SettingsScreen::enter() {
 }
 
 void SettingsScreen::update() {
-    Oled *display = controller->display;
+    Oled *display = Controller::instance->display;
     Canvas *rowBuffer = display->rowBuffer;
 
     display->setFont(oled_font6x8);
 
     rowBuffer->clear();
-    display->bufferString(0, "Screen Timeout Secs");
+    display->bufferString(0, "Screen Timeout Secs:");
     display->drawBufferRow(2);
 
     rowBuffer->clear();
     display->bufferString(0, "(Red knob):");
-    byte sTimeout = controller->screenTimeout();
+    byte sTimeout = Controller::instance->screenTimeout();
     if(sTimeout > SCREEN_TIMEOUT_MAX)
-        display->bufferString(84, "Never");
+        display->bufferString(96, "Never");
     else
-        display->bufferString(84, int2str(sTimeout));
+        display->bufferString(108, int2str(sTimeout));
     display->drawBufferRow(3);
 
     rowBuffer->clear();
@@ -49,10 +49,10 @@ void SettingsScreen::update() {
 
     rowBuffer->clear();
     display->bufferString(0, "(Green knob):");
-    byte lTimeout = controller->lightsTimeout();
-    if(sTimeout > LIGHTS_TIMEOUT_MAX)
-        display->bufferString(84, "Never");
+    byte lTimeout = Controller::instance->lightsTimeout();
+    if(lTimeout > LIGHTS_TIMEOUT_MAX)
+        display->bufferString(96, "Never");
     else
-        display->bufferString(84, int2str(lTimeout));
+        display->bufferString(108, int2str(lTimeout));
     display->drawBufferRow(6);
 }

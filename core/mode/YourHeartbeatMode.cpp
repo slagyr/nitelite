@@ -6,7 +6,7 @@
 #define UP_GAIN 3.0
 #define MIN_MULTIPLIER 0.5
 
-YourHeartbeatMode::YourHeartbeatMode(Controller *controller) : Mode(controller) {
+YourHeartbeatMode::YourHeartbeatMode() : Mode() {
 }
 
 const char *YourHeartbeatMode::getName() {
@@ -16,17 +16,17 @@ const char *YourHeartbeatMode::getName() {
 void YourHeartbeatMode::enter() {
     up = false;
     multiplier = 20;
-    controller->setScreen(controller->rgbScreen);
-    controller->readRGB();
-    controller->writeRGBInputs();
+    Controller::instance->setScreen(Controller::instance->rgbScreen);
+    Controller::instance->readRGB();
+    Controller::instance->writeRGBInputs();
 }
 
 void YourHeartbeatMode::tick() {
-    controller->readRGB();
+    Controller::instance->readRGB();
 
-    byte rLimit = controller->redInput;
-    byte gLimit = controller->greenInput;
-    byte bLimit = controller->blueInput;
+    byte rLimit = Controller::instance->redInput;
+    byte gLimit = Controller::instance->greenInput;
+    byte bLimit = Controller::instance->blueInput;
     float rStep = rLimit < SOFT_LOW_LIMIT ? 0 : (rLimit - SOFT_LOW_LIMIT) / NOMINAL_STEPS;
     float gStep = gLimit < SOFT_LOW_LIMIT ? 0 : (gLimit - SOFT_LOW_LIMIT) / NOMINAL_STEPS;
     float bStep = bLimit < SOFT_LOW_LIMIT ? 0 : (bLimit - SOFT_LOW_LIMIT) / NOMINAL_STEPS;
@@ -39,12 +39,12 @@ void YourHeartbeatMode::tick() {
         multiplier = MIN_MULTIPLIER;
 
 
-    if(controller->red > rLimit)
-        controller->red = rLimit;
-    if(controller->green > gLimit)
-        controller->green = gLimit;
-    if(controller->blue > bLimit)
-        controller->blue = bLimit;
+    if(Controller::instance->red > rLimit)
+        Controller::instance->red = rLimit;
+    if(Controller::instance->green > gLimit)
+        Controller::instance->green = gLimit;
+    if(Controller::instance->blue > bLimit)
+        Controller::instance->blue = bLimit;
 
     if(!up) {
         rStep *= -1;
@@ -60,10 +60,10 @@ void YourHeartbeatMode::tick() {
     if(done) {
         up = !up;
         multiplier = up ? MIN_MULTIPLIER : 20;
-        controller->red = rLimit;
-        controller->green = gLimit;
-        controller->blue = bLimit;
+        Controller::instance->red = rLimit;
+        Controller::instance->green = gLimit;
+        Controller::instance->blue = bLimit;
     }
 
-    controller->writeRGB();
+    Controller::instance->writeRGB();
 }

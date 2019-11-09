@@ -1,7 +1,7 @@
 #ifndef OLEDFONTS_H
 #define OLEDFONTS_H
 
-#include "common.h"
+#include "core.h"
 
 static const byte fontMetaOffset = 2;
 

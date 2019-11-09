@@ -1,17 +1,17 @@
 #include <Controller.h>
 #include "YourColorMode.h"
 
-YourColorMode::YourColorMode(Controller *controller) : Mode(controller) {}
+YourColorMode::YourColorMode() : Mode() {}
 
 const char *YourColorMode::getName() {
     return "Your Color";
 }
 
 void YourColorMode::enter() {
-    controller->setScreen(controller->rgbScreen);
+    Controller::instance->setScreen(Controller::instance->rgbScreen);
 }
 
 void YourColorMode::tick() {
-    controller->readRGB();
-    controller->writeRGBInputs();
+    Controller::instance->readRGB();
+    Controller::instance->writeRGBInputs();
 }

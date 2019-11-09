@@ -7,7 +7,7 @@
 class RWBMode : public TravelingMode {
 
 public:
-    RWBMode(Controller *controller);
+    RWBMode();
 
     const char *getName() override;
 

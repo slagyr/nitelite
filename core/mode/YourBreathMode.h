@@ -8,7 +8,7 @@ class YourBreathMode : public Mode {
 
 public:
 
-    YourBreathMode(Controller *controller);
+    YourBreathMode();
 
     const char *getName() override;
 

@@ -13,6 +13,7 @@ public:
         Oled *display = new Oled(hardware, new MockOledComm());
 
         MockController *controller = new MockController(hardware);
+        Controller::instance = controller;
 
         controller->display = display;
 

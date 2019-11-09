@@ -1,7 +1,7 @@
 #include <Controller.h>
 #include "July4thMode.h"
 
-July4thMode::July4thMode(Controller *controller) : FireworksMode(controller) {
+July4thMode::July4thMode() : FireworksMode() {
 
 }
 
@@ -10,7 +10,7 @@ const char *July4thMode::getName() {
 }
 
 void July4thMode::chooseColor() {
-    long choice = controller->hardware->randomLong(3);
+    long choice = Controller::instance->hardware->randomLong(3);
     if(choice == 0) {
         color->r = 255;
         color->g = 0;

@@ -1,16 +1,16 @@
 #include <Controller.h>
 #include "SleepMode.h"
 
-SleepMode::SleepMode(Controller *controller) : Mode(controller) {}
+SleepMode::SleepMode() : Mode() {}
 
 const char *SleepMode::getName() {
     return "Sleep";
 }
 
 void SleepMode::enter() {
-    controller->setScreen(controller->rgbScreen);
+    Controller::instance->setScreen(Controller::instance->rgbScreen);
 }
 
 void SleepMode::tick() {
-    controller->writeRGB(0, 0, 0);
+    Controller::instance->writeRGB(0, 0, 0);
 }

@@ -2,7 +2,7 @@
 #define NITELITE_BUTTON_H
 
 
-#include "common.h"
+#include "core.h"
 #include "Hardware.h"
 
 class Button {

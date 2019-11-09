@@ -8,7 +8,7 @@
 class CalibrateScreen : public Screen {
 
 public:
-    CalibrateScreen(Controller *controller);
+    CalibrateScreen();
 
     const char *getName() override;
 

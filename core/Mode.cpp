@@ -5,17 +5,17 @@ bool Mode::fade(float rStep, float gStep, float bStep, byte rLimit, byte gLimit,
     bool result = false;
     float value;
 
-    value = stepColor(controller->red, rStep, rLimit);
+    value = stepColor(Controller::instance->red, rStep, rLimit);
     result = fadeLimitHit(result, value, rStep, rLimit);
-    controller->red = value;
+    Controller::instance->red = value;
 
-    value = stepColor(controller->green, gStep, gLimit);
+    value = stepColor(Controller::instance->green, gStep, gLimit);
     result = fadeLimitHit(result, value, gStep, gLimit);
-    controller->green = value;
+    Controller::instance->green = value;
 
-    value = stepColor(controller->blue, bStep, bLimit);
+    value = stepColor(Controller::instance->blue, bStep, bLimit);
     result = fadeLimitHit(result, value, bStep, bLimit);
-    controller->blue = value;
+    Controller::instance->blue = value;
 
     return result;
 }
@@ -52,12 +52,12 @@ byte Mode::minb(byte a, byte b) {
         return b;
 }
 
-byte Mode::maxb(byte a, byte b) {
-    if (a > b)
-        return a;
-    else
-        return b;
-}
+//byte Mode::maxb(byte a, byte b) {
+//    if (a > b)
+//        return a;
+//    else
+//        return b;
+//}
 
 float Mode::minf(float a, float b) {
     if(a < b)
@@ -66,21 +66,21 @@ float Mode::minf(float a, float b) {
         return b;
 }
 
-float Mode::maxf(float a, float b) {
-    if(a > b)
-        return a;
-    else
-        return b;
-}
+//float Mode::maxf(float a, float b) {
+//    if(a > b)
+//        return a;
+//    else
+//        return b;
+//}
 
 void Mode::randomColor(Color *c) {
-    c->r = controller->hardware->randomLong(256);
-    c->g = controller->hardware->randomLong(256);
-    c->b = controller->hardware->randomLong(256);
+    c->r = Controller::instance->hardware->randomLong(256);
+    c->g = Controller::instance->hardware->randomLong(256);
+    c->b = Controller::instance->hardware->randomLong(256);
 }
 
 void Mode::randomBrightColor(Color *c) {
-    long choice = controller->hardware->randomLong(7);
+    long choice = Controller::instance->hardware->randomLong(7);
     c->r = 0;
     c->g = 0;
     c->b = 0;
@@ -116,19 +116,19 @@ void Mode::randomBrightColor(Color *c) {
 
 //
 //byte Mode::min() {
-//    byte min = controller->red;
-//    if(controller->green < min)
-//        min = controller->green;
-//    if(controller->blue < min)
-//        min = controller-> blue;
+//    byte min = Controller::instance->red;
+//    if(Controller::instance->green < min)
+//        min = Controller::instance->green;
+//    if(Controller::instance->blue < min)
+//        min = Controller::instance-> blue;
 //    return min;
 //}
 //
 //byte Mode::max() {
-//    byte max = controller->red;
-//    if(controller->green > max)
-//        max = controller->green;
-//    if(controller->blue > max)
-//        max = controller-> blue;
+//    byte max = Controller::instance->red;
+//    if(Controller::instance->green > max)
+//        max = Controller::instance->green;
+//    if(Controller::instance->blue > max)
+//        max = Controller::instance-> blue;
 //    return max;
 //}

@@ -8,13 +8,15 @@ class SettingsMode : public Mode {
 
 public:
 
-    SettingsMode(Controller *controller);
+    SettingsMode();
 
     const char *getName() override;
 
     void enter() override;
 
     void tick() override;
+
+    Screen *settingsScreen;
 };
 
 #endif //NITELITE_SETTINGSMODE_H

@@ -8,14 +8,14 @@ const char *SplashScreen::getName() {
 }
 
 void SplashScreen::enter() {
-    controller->display->drawBitmap(0, 0, 128, 64, splashBMP);
-    controller->display->setFont(oled_font6x8);
-    controller->display->writeString(20, 7, "NiteLite 1.0");
+    Controller::instance->display->drawBitmap(0, 0, 128, 64, splashBMP);
+    Controller::instance->display->setFont(oled_font6x8);
+    Controller::instance->display->writeString(20, 7, "NiteLite 1.0");
 }
 
 void SplashScreen::update() {
 
 }
 
-SplashScreen::SplashScreen(Controller *controller) : Screen(controller) {}
+SplashScreen::SplashScreen() : Screen() {}
 

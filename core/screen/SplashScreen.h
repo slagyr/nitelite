@@ -7,7 +7,7 @@
 class SplashScreen : public Screen {
 
 public:
-    explicit SplashScreen(Controller *controller);
+    explicit SplashScreen();
 
     const char *getName() override;
 

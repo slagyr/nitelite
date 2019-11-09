@@ -17,33 +17,33 @@
 #include <mode/SleepMode.h>
 #include <mode/SettingsMode.h>
 #include "Controller.h"
-#include "Context.h"
 #include "math.h"
 
+Controller *Controller::instance = nullptr;
 
 Controller::Controller(Hardware *hardware) {
     this->hardware = hardware;
 
-    splashScreen = new SplashScreen(this);
-    rgbScreen = new RGBScreen(this);
+    splashScreen = new SplashScreen();
+    rgbScreen = new RGBScreen();
 
-    calibrateMode = new CalibrateMode(this);
-    settingsMode = new SettingsMode(this);
-    sleepMode = new SleepMode(this);
-    modes = new Mode *[MODES];
-    modes[0] = new YourColorMode(this);
-    modes[1] = new YourBreathMode(this);
-    modes[2] = new YourHeartbeatMode(this);
-    modes[3] = new YourDiscoMode(this);
-    modes[4] = new RGBFadeMode(this);
-    modes[5] = new FireworksMode(this);
-    modes[6] = new July4thMode(this);
-    modes[7] = new RGBDiscoMode(this);
-    modes[8] = new WanderMode(this);
-    modes[9] = new TravelingMode(this);
-    modes[10] = new RWBMode(this);
-    modes[11] = new HalloweenMode(this);
-    modes[12] = new ChristmasMode(this);
+    calibrateMode = new CalibrateMode();
+    settingsMode = new SettingsMode();
+    sleepMode = new SleepMode();
+    modes = new Mode *[MODES]();
+    modes[0] = new YourColorMode();
+    modes[1] = new YourBreathMode();
+    modes[2] = new YourHeartbeatMode();
+    modes[3] = new YourDiscoMode();
+    modes[4] = new RGBFadeMode();
+    modes[5] = new FireworksMode();
+    modes[6] = new July4thMode();
+    modes[7] = new RGBDiscoMode();
+    modes[8] = new WanderMode();
+    modes[9] = new TravelingMode();
+    modes[10] = new RWBMode();
+    modes[11] = new HalloweenMode();
+    modes[12] = new ChristmasMode();
     modeIndex = 0;
 
     config = new Config();
@@ -80,10 +80,6 @@ void Controller::setScreen(Screen *screen) {
         screen->enter();
 }
 
-Screen *Controller::getScreen() {
-    return screen;
-}
-
 Screen *Controller::getActiveScreen() {
     if (tempScreen != nullptr)
         return tempScreen;
@@ -96,17 +92,16 @@ void Controller::setTempScreen(Screen *screen, int timeoutMillis) {
     tempScreen->enter();
 }
 
-Mode *Controller::getMode() {
-    return mode;
-}
-
 void Controller::setMode(Mode *m) {
     mode = m;
     mode->enter();
 }
 
 void Controller::tick(unsigned long millis) {
-    getActiveScreen()->update();
+    if(isDisplayOn)
+        getActiveScreen()->update();
+    else
+        hardware->sleep(65); // how long the screen update would have taken
 
     upButton->tick();
     downButton->tick();
@@ -125,7 +120,7 @@ void Controller::tick(unsigned long millis) {
 void Controller::handleLightsTimeout(unsigned long millis) {
     if (mode != sleepMode) {
         byte lTimeout = lightsTimeout();
-        if (lTimeout <= LIGHTS_TIMEOUT_MAX && millis > (lastUserEventTime + lTimeout * 60000))
+        if (lTimeout <= LIGHTS_TIMEOUT_MAX && millis > (lastUserEventTime + lTimeout * 1000))
             setMode(sleepMode);
     }
 }
@@ -197,6 +192,7 @@ void Controller::displayOn() {
 void Controller::displayOff() {
     if (!isDisplayOn)
         return;
+    display->clearScreen();
     hardware->setPinLow(OLED_PIN);
     isDisplayOn = false;
 }
@@ -251,26 +247,26 @@ byte Controller::ftob(float color) const {
     return (byte) (color + 0.5);
 }
 
-byte Controller::getRed() {
-    return ftob(red);
-}
-
-byte Controller::getGreen() {
-    return ftob(green);
-}
-
-byte Controller::getBlue() {
-    return ftob(blue);
-}
-
-void Controller::printRGB() {
-    hardware->print("RGB: ");
-    hardware->print(red);
-    hardware->print(", ");
-    hardware->print(green);
-    hardware->print(", ");
-    hardware->println(blue);
-}
+//byte Controller::getRed() {
+//    return ftob(red);
+//}
+//
+//byte Controller::getGreen() {
+//    return ftob(green);
+//}
+//
+//byte Controller::getBlue() {
+//    return ftob(blue);
+//}
+//
+//void Controller::printRGB() {
+//    hardware->print("RGB: ");
+//    hardware->print(red);
+//    hardware->print(", ");
+//    hardware->print(green);
+//    hardware->print(", ");
+//    hardware->println(blue);
+//}
 
 void Controller::configDefaults() {
     config->rMin = 0;

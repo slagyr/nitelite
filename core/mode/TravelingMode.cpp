@@ -3,7 +3,7 @@
 
 #define TRAVEL_STEPS 20
 
-TravelingMode::TravelingMode(Controller *controller) : Mode(controller) {
+TravelingMode::TravelingMode() : Mode() {
     dest = new Color();
 }
 
@@ -12,11 +12,11 @@ const char *TravelingMode::getName() {
 }
 
 void TravelingMode::enter() {
-    controller->setScreen(controller->rgbScreen);
+    Controller::instance->setScreen(Controller::instance->rgbScreen);
     nextColor();
-    controller->red = dest->r;
-    controller->green = dest->g;
-    controller->blue = dest->b;
+    Controller::instance->red = dest->r;
+    Controller::instance->green = dest->g;
+    Controller::instance->blue = dest->b;
     chooseDest();
     traveling = true;
 }
@@ -38,12 +38,12 @@ void TravelingMode::tick() {
             step++;
     }
 
-    controller->writeRGB();
+    Controller::instance->writeRGB();
 }
 
 void TravelingMode::chooseDest() {
     nextColor();
-    rStep = ((short) dest->r - controller->red) / TRAVEL_STEPS;
-    gStep = ((short) dest->g - controller->green) / TRAVEL_STEPS;
-    bStep = ((short) dest->b - controller->blue) / TRAVEL_STEPS;
+    rStep = ((short) dest->r - Controller::instance->red) / TRAVEL_STEPS;
+    gStep = ((short) dest->g - Controller::instance->green) / TRAVEL_STEPS;
+    bStep = ((short) dest->b - Controller::instance->blue) / TRAVEL_STEPS;
 }

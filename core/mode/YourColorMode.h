@@ -7,7 +7,7 @@ class YourColorMode : public Mode {
 
 public:
 
-    YourColorMode(Controller *controller);
+    YourColorMode();
 
     const char *getName() override;
 

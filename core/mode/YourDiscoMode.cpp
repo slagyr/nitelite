@@ -9,7 +9,7 @@
 #define DISCO_SIXTEENTH 2
 #define DISCO_BEATS 7
 
-YourDiscoMode::YourDiscoMode(Controller *controller) : Mode(controller) {
+YourDiscoMode::YourDiscoMode() : Mode() {
     color = new Color();
 }
 
@@ -19,17 +19,17 @@ const char *YourDiscoMode::getName() {
 
 void YourDiscoMode::enter() {
     beatCount = 0;
-    controller->setScreen(controller->rgbScreen);
+    Controller::instance->setScreen(Controller::instance->rgbScreen);
     chooseColor();
     chooseBeats();
 }
 
 void YourDiscoMode::chooseBeats() {
     repeat = false;
-    beat1 = controller->hardware->randomLong(DISCO_BEATS);
-    beat2 = controller->hardware->randomLong(DISCO_BEATS);
+    beat1 = Controller::instance->hardware->randomLong(DISCO_BEATS);
+    beat2 = Controller::instance->hardware->randomLong(DISCO_BEATS);
     while (beat2 == beat1)
-        beat2 = controller->hardware->randomLong(DISCO_BEATS);
+        beat2 = Controller::instance->hardware->randomLong(DISCO_BEATS);
 }
 
 void YourDiscoMode::tick() {
@@ -75,25 +75,25 @@ void YourDiscoMode::tick() {
             break;
     }
 
-    controller->writeRGB();
+    Controller::instance->writeRGB();
     beatCount++;
 }
 
 void YourDiscoMode::chooseColor() {
-    controller->readRGB();
-    color->r = controller->redInput;
-    color->g = controller->greenInput;
-    color->b = controller->blueInput;
+    Controller::instance->readRGB();
+    color->r = Controller::instance->redInput;
+    color->g = Controller::instance->greenInput;
+    color->b = Controller::instance->blueInput;
 }
 
 void YourDiscoMode::writeColor() {
-    controller->writeRGB(color->r, color->g, color->b);
+    Controller::instance->writeRGB(color->r, color->g, color->b);
 }
 
 void YourDiscoMode::pass() {
-    float rStep = controller->red * DISCO_STEP_PERCENT;
-    float gStep = controller->green * DISCO_STEP_PERCENT;
-    float bStep = controller->blue * DISCO_STEP_PERCENT;
+    float rStep = Controller::instance->red * DISCO_STEP_PERCENT;
+    float gStep = Controller::instance->green * DISCO_STEP_PERCENT;
+    float bStep = Controller::instance->blue * DISCO_STEP_PERCENT;
 
     fade(rStep, gStep, bStep, 0, 0, 0);
 }

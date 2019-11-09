@@ -6,7 +6,7 @@
 class ChristmasMode : public TravelingMode {
 
 public:
-    ChristmasMode(Controller *controller);
+    ChristmasMode();
 
     const char *getName() override;
 

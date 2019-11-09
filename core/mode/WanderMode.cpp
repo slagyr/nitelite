@@ -3,7 +3,7 @@
 
 #define WANDER_STEPS 25.0
 
-WanderMode::WanderMode(Controller *controller) : Mode(controller) {
+WanderMode::WanderMode() : Mode() {
     dest = new Color();
 }
 
@@ -12,11 +12,11 @@ const char *WanderMode::getName() {
 }
 
 void WanderMode::enter() {
-    controller->setScreen(controller->rgbScreen);
+    Controller::instance->setScreen(Controller::instance->rgbScreen);
     randomColor(dest);
-    controller->red = dest->r;
-    controller->green = dest->g;
-    controller->blue = dest->b;
+    Controller::instance->red = dest->r;
+    Controller::instance->green = dest->g;
+    Controller::instance->blue = dest->b;
     chooseDest();
 }
 
@@ -25,12 +25,12 @@ void WanderMode::tick() {
     if(done)
         chooseDest();
 
-    controller->writeRGB();
+    Controller::instance->writeRGB();
 }
 
 void WanderMode::chooseDest() {
     randomColor(dest);
-    rStep = ((short) dest->r - controller->red) / WANDER_STEPS;
-    gStep = ((short) dest->g - controller->green) / WANDER_STEPS;
-    bStep = ((short) dest->b - controller->blue) / WANDER_STEPS;
+    rStep = ((short) dest->r - Controller::instance->red) / WANDER_STEPS;
+    gStep = ((short) dest->g - Controller::instance->green) / WANDER_STEPS;
+    bStep = ((short) dest->b - Controller::instance->blue) / WANDER_STEPS;
 }

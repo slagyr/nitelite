@@ -6,7 +6,7 @@
 class MockMode : public Mode {
 public:
 
-    MockMode(Controller *controller, const char* name) : Mode(controller) {
+    MockMode(Controller *controller, const char* name) : Mode() {
         this->name = name;
     }
 

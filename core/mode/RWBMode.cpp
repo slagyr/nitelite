@@ -1,6 +1,6 @@
 #include "RWBMode.h"
 
-RWBMode::RWBMode(Controller *controller) : TravelingMode(controller) {
+RWBMode::RWBMode() : TravelingMode() {
     state = 2;
 }
 

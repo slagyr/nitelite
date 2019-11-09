@@ -8,7 +8,7 @@
 class SettingsScreen : public Screen {
 
 public:
-    SettingsScreen(Controller *controller);
+    SettingsScreen();
 
     const char *getName() override;
 

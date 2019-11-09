@@ -14,11 +14,7 @@ public:
     virtual void update() = 0;
 
 protected:
-    explicit Screen(Controller *controller) {
-        this->controller = controller;
-    };
-
-    Controller *controller;
+    explicit Screen() {};
 };
 
 

@@ -7,7 +7,7 @@ class HalloweenMode : public TravelingMode {
 
 public:
 
-    HalloweenMode(Controller *controller);
+    HalloweenMode();
 
     const char *getName() override;
 

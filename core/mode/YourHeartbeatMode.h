@@ -7,7 +7,7 @@ class YourHeartbeatMode : public Mode {
 
 public:
 
-    YourHeartbeatMode(Controller *controller);
+    YourHeartbeatMode();
 
     const char *getName() override;
 

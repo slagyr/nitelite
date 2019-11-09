@@ -1,7 +1,7 @@
 #ifndef OLEDCOMM_H
 #define OLEDCOMM_H
 
-#include "common.h"
+#include "core.h"
 
 class OledComm {
 public:

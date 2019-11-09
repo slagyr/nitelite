@@ -11,7 +11,7 @@ protected:
 
     virtual void SetUp() {
         controller = MockController::create();
-        screen = new CalibrateScreen(controller);
+        screen = new CalibrateScreen();
     }
 
     virtual void TearDown() {

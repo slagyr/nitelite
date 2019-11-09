@@ -13,7 +13,7 @@ protected:
 
     virtual void SetUp() {
         controller = MockController::create();
-        screen = new RGBScreen(controller);
+        screen = new RGBScreen();
         mode = new MockMode(controller, "Silly Mode");
         controller->setMode(mode);
     }

@@ -8,7 +8,7 @@
 class RGBScreen : public Screen {
 
 public:
-    RGBScreen(Controller *controller);
+    RGBScreen();
 
     const char *getName() override;
 

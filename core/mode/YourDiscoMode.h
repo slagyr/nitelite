@@ -8,7 +8,7 @@ class YourDiscoMode : public Mode {
 
 public:
 
-    YourDiscoMode(Controller *controller);
+    YourDiscoMode();
 
     const char *getName() override;
 

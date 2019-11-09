@@ -1,17 +1,17 @@
 #include <oled/OledFonts.h>
 #include "CalibrateScreen.h"
 #include "Controller.h"
-#include "common.h"
+#include "core.h"
 #include "string.h"
 
-CalibrateScreen::CalibrateScreen(Controller *controller) : Screen(controller) {}
+CalibrateScreen::CalibrateScreen() : Screen() {}
 
 const char *CalibrateScreen::getName() {
     return "Calibration";
 }
 
 void CalibrateScreen::enter() {
-    Oled *display = controller->display;
+    Oled *display = Controller::instance->display;
     display->clearScreen();
 
     display->rowBuffer->clear();
@@ -19,32 +19,32 @@ void CalibrateScreen::enter() {
     display->drawCanvas(0, 1, 128, 8, display->rowBuffer->getBuffer());
 
     display->setFont(oled_font6x8);
-    display->writeString(1, 0, "Config");
+    display->writeString(1, 0, "Calibration");
 
     update();
 }
 
 void CalibrateScreen::update() {
-    Oled *display = controller->display;
+    Oled *display = Controller::instance->display;
     Canvas *rowBuffer = display->rowBuffer;
 
     display->setFont(oled_font8x8);
 
     rowBuffer->clear();
     display->bufferString(16, "RED:");
-    display->bufferString(56, int2str(controller->config->rMin));
-    display->bufferString(96, int2str(controller->config->rMax));
+    display->bufferString(56, int2str(Controller::instance->config->rMin));
+    display->bufferString(96, int2str(Controller::instance->config->rMax));
     display->drawBufferRow(2);
 
     rowBuffer->clear();
     display->bufferString(0, "GREEN:");
-    display->bufferString(56, int2str(controller->config->gMin));
-    display->bufferString(96, int2str(controller->config->gMax));
+    display->bufferString(56, int2str(Controller::instance->config->gMin));
+    display->bufferString(96, int2str(Controller::instance->config->gMax));
     display->drawBufferRow(4);
 
     rowBuffer->clear();
     display->bufferString(8, "BLUE:");
-    display->bufferString(56, int2str(controller->config->bMin));
-    display->bufferString(96, int2str(controller->config->bMax));
+    display->bufferString(56, int2str(Controller::instance->config->bMin));
+    display->bufferString(96, int2str(Controller::instance->config->bMax));
     display->drawBufferRow(6);
 }

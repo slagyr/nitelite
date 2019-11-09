@@ -1,6 +1,6 @@
 #include "ChristmasMode.h"
 
-ChristmasMode::ChristmasMode(Controller *controller) : TravelingMode(controller) {
+ChristmasMode::ChristmasMode() : TravelingMode() {
     state = 3;
 }
 

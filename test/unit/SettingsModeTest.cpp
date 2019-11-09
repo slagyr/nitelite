@@ -12,7 +12,7 @@ protected:
     virtual void SetUp() {
         controller = MockController::create();
         hardware = (MockHardware*)controller->hardware;
-        mode = new SettingsMode(controller);
+        mode = new SettingsMode();
     }
 
     virtual void TearDown() {
@@ -28,7 +28,7 @@ TEST_F(SettingsModeTest, Name) {
 TEST_F(SettingsModeTest, Enter) {
     mode->enter();
 
-    EXPECT_EQ("Settings", controller->getScreen()->getName());
+    EXPECT_EQ("Settings", controller->screen->getName());
 }
 
 TEST_F(SettingsModeTest, SavesMinMaxToSettings) {

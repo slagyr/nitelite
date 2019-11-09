@@ -7,7 +7,7 @@
 class July4thMode : public FireworksMode {
 
 public:
-    July4thMode(Controller *controller);
+    July4thMode();
 
     const char *getName() override;
 

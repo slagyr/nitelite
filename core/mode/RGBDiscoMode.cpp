@@ -9,6 +9,6 @@ void RGBDiscoMode::chooseColor() {
     randomBrightColor(color);
 }
 
-RGBDiscoMode::RGBDiscoMode(Controller *controller) : YourDiscoMode(controller) {
+RGBDiscoMode::RGBDiscoMode() : YourDiscoMode() {
 
 }

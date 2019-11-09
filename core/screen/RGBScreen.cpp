@@ -1,17 +1,17 @@
 #include <oled/OledFonts.h>
 #include "RGBScreen.h"
 #include "Controller.h"
-#include "common.h"
+#include "core.h"
 #include "string.h"
 
-RGBScreen::RGBScreen(Controller *controller) : Screen(controller) {}
+RGBScreen::RGBScreen() : Screen() {}
 
 const char *RGBScreen::getName() {
     return "RGB";
 }
 
 void RGBScreen::enter() {
-    Oled *display = controller->display;
+    Oled *display = Controller::instance->display;
     display->clearScreen();
 
     display->rowBuffer->clear();
@@ -29,24 +29,24 @@ void RGBScreen::writeColorValue(int row, const char *color, byte colorCol, const
     else if(digits == 2)
         col = 88;
 
-    controller->display->rowBuffer->clear();
-    controller->display->bufferString(colorCol, color);
-    controller->display->bufferString(col, colorVal);
-    controller->display->drawBufferRow(row);
+    Controller::instance->display->rowBuffer->clear();
+    Controller::instance->display->bufferString(colorCol, color);
+    Controller::instance->display->bufferString(col, colorVal);
+    Controller::instance->display->drawBufferRow(row);
 }
 
 void RGBScreen::update() {
-    Oled *display = controller->display;
+    Oled *display = Controller::instance->display;
     Canvas *rowBuffer = display->rowBuffer;
 
     display->setFont(oled_font6x8);
     rowBuffer->clear();
-    display->bufferString(1, controller->getMode()->getName());
+    display->bufferString(1, Controller::instance->mode->getName());
     display->drawBufferRow(0);
 
     display->setFont(oled_font8x8);
-    writeColorValue(2, "RED:", 40, int2str(controller->red));
-    writeColorValue(4, "GREEN:", 24, int2str(controller->green));
-    writeColorValue(6, "BLUE:", 32, int2str(controller->blue));
+    writeColorValue(2, "RED:", 40, int2str(Controller::instance->red));
+    writeColorValue(4, "GREEN:", 24, int2str(Controller::instance->green));
+    writeColorValue(6, "BLUE:", 32, int2str(Controller::instance->blue));
 }
 

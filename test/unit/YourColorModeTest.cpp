@@ -10,7 +10,7 @@ protected:
 
     virtual void SetUp() {
         controller = MockController::create();
-        mode = new YourColorMode(controller);
+        mode = new YourColorMode();
         controller->setScreen(controller->splashScreen);
     }
 
@@ -27,6 +27,6 @@ TEST_F(YourColorModeTest, Name) {
 TEST_F(YourColorModeTest, Enter) {
     mode->enter();
 
-    EXPECT_EQ("RGB", controller->getScreen()->getName());
+    EXPECT_EQ("RGB", controller->screen->getName());
 }
 

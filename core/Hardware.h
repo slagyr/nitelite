@@ -1,8 +1,7 @@
 #ifndef HARDWARE_H
 #define HARDWARE_H
 
-#include "common.h"
-#include "config.h"
+#include "core.h"
 
 class Hardware {
 

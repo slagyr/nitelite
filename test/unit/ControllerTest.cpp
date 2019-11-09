@@ -17,6 +17,7 @@ protected:
     virtual void SetUp() {
         hardware = new MockHardware();
         controller = new Controller(hardware);
+        Controller::instance = controller;
 
         oledComm = new MockOledComm();
         controller->display = display = new Oled(hardware, oledComm);
@@ -37,7 +38,7 @@ protected:
 TEST_F(ControllerTest, Screens) {
     EXPECT_STREQ("Splash", controller->splashScreen->getName());
     EXPECT_STREQ("RGB", controller->rgbScreen->getName());
-    EXPECT_EQ(controller->rgbScreen, controller->getScreen());
+    EXPECT_EQ(controller->rgbScreen, controller->screen);
 }
 
 TEST_F(ControllerTest, Buttons) {
@@ -60,7 +61,7 @@ TEST_F(ControllerTest, Modes) {
     EXPECT_EQ("Halloween", controller->modes[11]->getName());
     EXPECT_EQ("Christmas", controller->modes[12]->getName());
 
-    EXPECT_EQ("Your Color", controller->getMode()->getName());
+    EXPECT_EQ("Your Color", controller->mode->getName());
     EXPECT_EQ(0, controller->modeIndex);
 }
 
@@ -113,7 +114,7 @@ TEST_F(ControllerTest, LoadingMode) {
     controller->setup();
 
     EXPECT_EQ(10, controller->modeIndex);
-    EXPECT_EQ(controller->modes[10], controller->getMode());
+    EXPECT_EQ(controller->modes[10], controller->mode);
 }
 
 TEST_F(ControllerTest, TempScreenTimeout) {
@@ -241,7 +242,7 @@ TEST_F(ControllerTest, DownPressed) {
     controller->tick(1);
 
     EXPECT_EQ(1, controller->modeIndex);
-    EXPECT_EQ("Your Color Breathing", controller->getMode()->getName());
+    EXPECT_EQ("Your Color Breathing", controller->mode->getName());
 
     for (int i = 1; i < MODES; i++) {
         controller->downButton->force(true);
@@ -249,7 +250,7 @@ TEST_F(ControllerTest, DownPressed) {
     }
 
     EXPECT_EQ(0, controller->modeIndex);
-    EXPECT_EQ("Your Color", controller->getMode()->getName());
+    EXPECT_EQ("Your Color", controller->mode->getName());
 }
 
 TEST_F(ControllerTest, UpPressed) {
@@ -260,7 +261,7 @@ TEST_F(ControllerTest, UpPressed) {
     }
 
     EXPECT_EQ(1, controller->modeIndex);
-    EXPECT_STREQ("Your Color Breathing", controller->getMode()->getName());
+    EXPECT_STREQ("Your Color Breathing", controller->mode->getName());
 }
 
 TEST_F(ControllerTest, UpPressedWithSplashGoesToConfig) {
@@ -269,7 +270,7 @@ TEST_F(ControllerTest, UpPressedWithSplashGoesToConfig) {
     controller->upButton->force(true);
     controller->tick(123);
 
-    EXPECT_STREQ("Calibration", controller->getMode()->getName());
+    EXPECT_STREQ("Calibration", controller->mode->getName());
 }
 
 TEST_F(ControllerTest, DownPressedWithSplashGoesToSettings) {
@@ -278,7 +279,7 @@ TEST_F(ControllerTest, DownPressedWithSplashGoesToSettings) {
     controller->downButton->force(true);
     controller->tick(123);
 
-    EXPECT_STREQ("Settings", controller->getMode()->getName());
+    EXPECT_STREQ("Settings", controller->mode->getName());
 }
 
 TEST_F(ControllerTest, ScreenTimeout) {
@@ -331,10 +332,10 @@ TEST_F(ControllerTest, LightsTimeoutAfterTime) {
     controller->setModeIndex(0);
 
     controller->tick(LIGHTS_TIMEOUT_MULT * 60000);
-    EXPECT_EQ("Your Color", controller->getMode()->getName());
+    EXPECT_EQ("Your Color", controller->mode->getName());
 
     controller->tick(LIGHTS_TIMEOUT_MULT * 60000 + 1100);
-    EXPECT_EQ("Sleep", controller->getMode()->getName());
+    EXPECT_EQ("Sleep", controller->mode->getName());
 }
 
 TEST_F(ControllerTest, LightsTimeoutNever) {
@@ -344,7 +345,7 @@ TEST_F(ControllerTest, LightsTimeoutNever) {
     controller->setModeIndex(0);
 
     controller->tick(99999999999);
-    EXPECT_STREQ("Your Color", controller->getMode()->getName());
+    EXPECT_STREQ("Your Color", controller->mode->getName());
 }
 
 TEST_F(ControllerTest, WakeOnUpPressed) {
@@ -356,7 +357,7 @@ TEST_F(ControllerTest, WakeOnUpPressed) {
     controller->upButton->force(true);
 
     controller->tick(9000);
-    EXPECT_STREQ("Your Color", controller->getMode()->getName());
+    EXPECT_STREQ("Your Color", controller->mode->getName());
     EXPECT_EQ(true, controller->isDisplayOn);
 }
 
@@ -369,6 +370,6 @@ TEST_F(ControllerTest, WakeOnDownPressed) {
     controller->downButton->force(true);
 
     controller->tick(9000);
-    EXPECT_STREQ("Your Color", controller->getMode()->getName());
+    EXPECT_STREQ("Your Color", controller->mode->getName());
     EXPECT_EQ(true, controller->isDisplayOn);
 }

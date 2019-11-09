@@ -11,7 +11,7 @@ protected:
 
     virtual void SetUp() {
         controller = MockController::create();
-        screen = new SplashScreen(controller);
+        screen = new SplashScreen();
     }
 
     virtual void TearDown() {

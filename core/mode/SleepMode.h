@@ -8,7 +8,7 @@ class SleepMode : public Mode {
 
 public:
 
-    SleepMode(Controller *controller);
+    SleepMode();
 
     const char *getName() override;
 

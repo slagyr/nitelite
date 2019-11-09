@@ -8,7 +8,7 @@ class RGBFadeMode : public Mode {
 
 public:
 
-    RGBFadeMode(Controller *controller);
+    RGBFadeMode();
 
     const char *getName() override;
 

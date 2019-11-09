@@ -8,7 +8,7 @@ class WanderMode : public Mode {
 
 public:
 
-    WanderMode(Controller *controller);
+    WanderMode();
 
     const char *getName() override;
 

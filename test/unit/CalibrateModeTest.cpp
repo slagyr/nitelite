@@ -12,7 +12,7 @@ protected:
     virtual void SetUp() {
         controller = MockController::create();
         hardware = (MockHardware*)controller->hardware;
-        mode = new CalibrateMode(controller);
+        mode = new CalibrateMode();
     }
 
     virtual void TearDown() {
@@ -28,7 +28,7 @@ TEST_F(CalibrateModeTest, Name) {
 TEST_F(CalibrateModeTest, Enter) {
     mode->enter();
 
-    EXPECT_EQ("Calibration", controller->getScreen()->getName());
+    EXPECT_EQ("Calibration", controller->screen->getName());
 }
 
 TEST_F(CalibrateModeTest, SavesMinMaxToConfig) {

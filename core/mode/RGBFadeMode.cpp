@@ -6,7 +6,7 @@
 #define B2R 2
 #define RGB_FADE_STEP 5
 
-RGBFadeMode::RGBFadeMode(Controller *controller) : Mode(controller) {
+RGBFadeMode::RGBFadeMode() : Mode() {
 }
 
 const char *RGBFadeMode::getName() {
@@ -15,14 +15,14 @@ const char *RGBFadeMode::getName() {
 
 void RGBFadeMode::enter() {
     state = R2G;
-    controller->setScreen(controller->rgbScreen);
-    controller->red = 255;
-    controller->green = 0;
-    controller->blue = 0;
+    Controller::instance->setScreen(Controller::instance->rgbScreen);
+    Controller::instance->red = 255;
+    Controller::instance->green = 0;
+    Controller::instance->blue = 0;
 }
 
 void RGBFadeMode::tick() {
-    controller->readRGB();
+    Controller::instance->readRGB();
     switch (state) {
         case R2G:
             if (fade(-RGB_FADE_STEP, RGB_FADE_STEP, 0, 0, 255, 1))
@@ -38,5 +38,5 @@ void RGBFadeMode::tick() {
             break;
     }
 
-    controller->writeRGB();
+    Controller::instance->writeRGB();
 }

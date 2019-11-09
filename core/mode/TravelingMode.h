@@ -8,7 +8,7 @@ class TravelingMode : public Mode {
 
 public:
 
-    TravelingMode(Controller *controller);
+    TravelingMode();
 
     const char *getName() override;
 

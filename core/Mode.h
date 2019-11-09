@@ -1,11 +1,10 @@
 #ifndef NITELITE_MODE_H
 #define NITELITE_MODE_H
 
-#include "common.h"
+#include "core.h"
+#include "Screen.h"
 
 #define SOFT_LOW_LIMIT 15
-
-class Controller;
 
 struct Color {
     byte r;
@@ -32,16 +31,11 @@ public:
 //    byte min();
 //    byte max();
     byte minb(byte a, byte b);
-    byte maxb(byte a, byte b);
+//    byte maxb(byte a, byte b);
     float minf(float a, float b);
-    float maxf(float a, float b);
+//    float maxf(float a, float b);
 
 protected:
-    explicit Mode(Controller *controller) {
-        this->controller = controller;
-    };
-
-    Controller *controller;
 
     bool fadeLimitHit(bool result, float color, float step, byte limit) const;
 

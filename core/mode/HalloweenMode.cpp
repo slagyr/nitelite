@@ -3,7 +3,7 @@
 
 #define HALLOWEEN_LIGHTNING_FADE -0.2
 
-HalloweenMode::HalloweenMode(Controller *controller) : TravelingMode(controller) {
+HalloweenMode::HalloweenMode() : TravelingMode() {
     state = 2;
     lightning = false;
 }
@@ -32,16 +32,16 @@ void HalloweenMode::nextColor() {
 }
 
 void HalloweenMode::tick() {
-    if(controller->hardware->randomLong(50) == 0) {
+    if(Controller::instance->hardware->randomLong(50) == 0) {
         lightning = true;
-        controller->writeRGB(255, 255, 255);
+        Controller::instance->writeRGB(255, 255, 255);
     } else if(lightning) {
-        float rStep = minf(-1.0, (controller->red - dest->r) * HALLOWEEN_LIGHTNING_FADE);
-        float gStep = minf(-1.0, (controller->green - dest->g) * HALLOWEEN_LIGHTNING_FADE);
-        float bStep = minf(-1.0, (controller->blue - dest->b) * HALLOWEEN_LIGHTNING_FADE);
+        float rStep = minf(-1.0, (Controller::instance->red - dest->r) * HALLOWEEN_LIGHTNING_FADE);
+        float gStep = minf(-1.0, (Controller::instance->green - dest->g) * HALLOWEEN_LIGHTNING_FADE);
+        float bStep = minf(-1.0, (Controller::instance->blue - dest->b) * HALLOWEEN_LIGHTNING_FADE);
 
         bool done = fade(rStep, gStep, bStep, dest->r, dest->g, dest->b);
-        controller->writeRGB();
+        Controller::instance->writeRGB();
         if(done)
             lightning = false;
     } else
