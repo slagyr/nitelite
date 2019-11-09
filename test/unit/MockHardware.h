@@ -99,11 +99,11 @@ public:
 
     void sleep(unsigned long duration) override { delays.push_back(duration); }
 
-    void saveCalibration(Config *conf) override {
+    void saveConfig(Config *conf) override {
         memcpy(config, conf, sizeof(Config));
     }
 
-    void loadCalibration(Config *conf) override {
+    void loadConfig(Config *conf) override {
         if(config != nullptr)
             memcpy(conf, config, sizeof(Config));
     }

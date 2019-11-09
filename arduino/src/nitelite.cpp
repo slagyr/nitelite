@@ -25,7 +25,7 @@ void setup() {
     controller->displayOn();
     controller->setTempScreen(controller->splashScreen, 3000);
 
-    hardware->loadCalibration(controller->config);
+    hardware->loadConfig(controller->config);
 
     Serial.print("availableMemory(): ");
     Serial.println(availableMemory());

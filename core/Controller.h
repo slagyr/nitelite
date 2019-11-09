@@ -58,7 +58,9 @@ public:
     Screen *rgbScreen;
 
     Mode **modes;
-    Mode *configMode;
+    Mode *calibrateMode;
+    Mode *settingsMode;
+    Mode *sleepMode;
 
     Hardware *hardware;
     Oled *display;
@@ -74,10 +76,17 @@ public:
     float blue;
     short tempScreenTimeout;
     short modeIndex;
+    unsigned long lastUserEventTime;
+    bool isDisplayOn;
 
     void printRGB();
 
     void setModeIndex(short mode);
+
+    void expireTempScreen();
+
+    byte screenTimeout();
+    byte lightsTimeout();
 
 protected:
 
@@ -87,12 +96,20 @@ protected:
 
 private:
 
-    unsigned long lastUserEventTime;
 
     byte analogToDigitalColor(int a, short min, short max) const;
 
     byte ftob(float red) const;
 
+    void upPressed(unsigned long millis);
+
+    void downPressed(unsigned long millis);
+
+    void handleTempScreenTimeout(unsigned long millis);
+
+    void handleScreenTimeout(unsigned long millis);
+
+    void handleLightsTimeout(unsigned long millis);
 };
 
 

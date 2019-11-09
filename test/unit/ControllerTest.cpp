@@ -86,11 +86,11 @@ TEST_F(ControllerTest, SetupSavedConfig) {
     conf.rMax = 997;
     conf.gMax = 998;
     conf.bMax = 999;
-    hardware->saveCalibration(&conf);
+    hardware->saveConfig(&conf);
 
-    hardware->loadCalibration(controller->config);
+    hardware->loadConfig(controller->config);
 
-    EXPECT_EQ(1, controller->config->version);
+    EXPECT_EQ(CONFIG_VERSION, controller->config->version);
     EXPECT_EQ(1, controller->config->rMin);
     EXPECT_EQ(2, controller->config->gMin);
     EXPECT_EQ(3, controller->config->bMin);
@@ -260,14 +260,115 @@ TEST_F(ControllerTest, UpPressed) {
     }
 
     EXPECT_EQ(1, controller->modeIndex);
-    EXPECT_EQ("Your Color Breathing", controller->getMode()->getName());
+    EXPECT_STREQ("Your Color Breathing", controller->getMode()->getName());
 }
 
-TEST_F(ControllerTest, UpPressedWithSplashGopesToConfig) {
+TEST_F(ControllerTest, UpPressedWithSplashGoesToConfig) {
     controller->setTempScreen(controller->splashScreen, 1000);
 
     controller->upButton->force(true);
     controller->tick(123);
 
-    EXPECT_EQ("Calibration", controller->getMode()->getName());
+    EXPECT_STREQ("Calibration", controller->getMode()->getName());
+}
+
+TEST_F(ControllerTest, DownPressedWithSplashGoesToSettings) {
+    controller->setTempScreen(controller->splashScreen, 1000);
+
+    controller->downButton->force(true);
+    controller->tick(123);
+
+    EXPECT_STREQ("Settings", controller->getMode()->getName());
+}
+
+TEST_F(ControllerTest, ScreenTimeout) {
+    controller->config->screenTimeout = 0;
+
+    EXPECT_EQ(5, controller->screenTimeout());
+
+    controller->config->screenTimeout = 255;
+
+    EXPECT_EQ(55, controller->screenTimeout());
+}
+
+TEST_F(ControllerTest, ScreenTimeoutAfterTime) {
+    controller->setup();
+    controller->displayOn();
+    controller->config->screenTimeout = 0;
+    controller->lastUserEventTime = 1000;
+
+    controller->tick(5500);
+    EXPECT_EQ(true, controller->isDisplayOn);
+
+    controller->tick(6100);
+    EXPECT_EQ(false, controller->isDisplayOn);
+}
+
+TEST_F(ControllerTest, ScreenTimeoutNever) {
+    controller->setup();
+    controller->displayOn();
+    controller->config->screenTimeout = 255;
+    controller->lastUserEventTime = 1000;
+
+    controller->tick(999999);
+    EXPECT_EQ(true, controller->isDisplayOn);
+}
+
+TEST_F(ControllerTest, LightsTimeout) {
+    controller->config->lightsTimeout = 0;
+
+    EXPECT_EQ(20, controller->lightsTimeout());
+
+    controller->config->lightsTimeout = 255;
+
+    EXPECT_EQ(220, controller->lightsTimeout());
+}
+
+TEST_F(ControllerTest, LightsTimeoutAfterTime) {
+    controller->setup();
+    controller->config->lightsTimeout = 0;
+    controller->lastUserEventTime = 1000;
+    controller->setModeIndex(0);
+
+    controller->tick(LIGHTS_TIMEOUT_MULT * 60000);
+    EXPECT_EQ("Your Color", controller->getMode()->getName());
+
+    controller->tick(LIGHTS_TIMEOUT_MULT * 60000 + 1100);
+    EXPECT_EQ("Sleep", controller->getMode()->getName());
+}
+
+TEST_F(ControllerTest, LightsTimeoutNever) {
+    controller->setup();
+    controller->config->lightsTimeout = 255;
+    controller->lastUserEventTime = 1000;
+    controller->setModeIndex(0);
+
+    controller->tick(99999999999);
+    EXPECT_STREQ("Your Color", controller->getMode()->getName());
+}
+
+TEST_F(ControllerTest, WakeOnUpPressed) {
+    controller->setup();
+    controller->setModeIndex(0);
+    controller->setMode(controller->sleepMode);
+    controller->displayOff();
+
+    controller->upButton->force(true);
+
+    controller->tick(9000);
+    EXPECT_STREQ("Your Color", controller->getMode()->getName());
+    EXPECT_EQ(true, controller->isDisplayOn);
+}
+
+TEST_F(ControllerTest, WakeOnDownPressed) {
+    controller->setup();
+    controller->setModeIndex(0);
+    controller->setMode(controller->sleepMode);
+    controller->displayOff();
+
+    controller->downButton->force(true);
+
+    controller->tick(9000);
+    EXPECT_STREQ("Your Color", controller->getMode()->getName());
+    EXPECT_EQ(true, controller->isDisplayOn);
 }

@@ -2,7 +2,7 @@
 #include "mode/CalibrateMode.h"
 #include "MockController.h"
 
-class ConfigModeTest : public ::testing::Test {
+class CalibrateModeTest : public ::testing::Test {
 protected:
 
     MockController *controller;
@@ -21,17 +21,17 @@ protected:
     }
 };
 
-TEST_F(ConfigModeTest, Name) {
+TEST_F(CalibrateModeTest, Name) {
     EXPECT_EQ("Calibration", mode->getName());
 }
 
-TEST_F(ConfigModeTest, Enter) {
+TEST_F(CalibrateModeTest, Enter) {
     mode->enter();
 
     EXPECT_EQ("Calibration", controller->getScreen()->getName());
 }
 
-TEST_F(ConfigModeTest, SavesMinMaxToConfig) {
+TEST_F(CalibrateModeTest, SavesMinMaxToConfig) {
     mode->enter();
 
     hardware->analogReads[R_IN_PIN].push(999);

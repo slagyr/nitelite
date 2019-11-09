@@ -43,5 +43,5 @@ void CalibrateMode::tick() {
     if(b > config->bMax)
         config->bMax = b;
 
-    controller->hardware->saveCalibration(config);
+    controller->hardware->saveConfig(config);
 }
