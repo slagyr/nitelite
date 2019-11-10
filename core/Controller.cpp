@@ -120,7 +120,7 @@ void Controller::tick(unsigned long millis) {
 void Controller::handleLightsTimeout(unsigned long millis) {
     if (mode != sleepMode) {
         byte lTimeout = lightsTimeout();
-        if (lTimeout <= LIGHTS_TIMEOUT_MAX && millis > (lastUserEventTime + lTimeout * 1000))
+        if (lTimeout <= LIGHTS_TIMEOUT_MAX && millis > (lastUserEventTime + lTimeout * 60000))
             setMode(sleepMode);
     }
 }
@@ -269,6 +269,8 @@ byte Controller::ftob(float color) const {
 //}
 
 void Controller::configDefaults() {
+    config->screenTimeout = 255;
+    config->lightsTimeout = 255;
     config->rMin = 0;
     config->rMax = 1023;
     config->gMin = 0;

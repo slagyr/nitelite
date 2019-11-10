@@ -4,7 +4,7 @@
 
 
 #define MODE_ADDRESS 42
-#define CONFIG_ADDRESS 100
+#define CONFIG  _ADDRESS 100
 
 void ArduinoHardware::pinToInput(byte pin) {
     pinMode(pin, INPUT);

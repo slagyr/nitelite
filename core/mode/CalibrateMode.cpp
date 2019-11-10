@@ -15,6 +15,8 @@ void CalibrateMode::enter() {
 
     Config *config = Controller::instance->config;
     config->version = CONFIG_VERSION;
+    config->screenTimeout = 255;
+    config->lightsTimeout = 255;
     config->rMin = 1023;
     config->gMin = 1023;
     config->bMin = 1023;
